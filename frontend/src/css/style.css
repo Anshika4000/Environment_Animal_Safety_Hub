@@ -145,6 +145,7 @@ select {
   background-clip: text;
 }
 
+
 /* ===== BUTTONS ===== */
 .btn {
   display: inline-flex;
@@ -377,6 +378,9 @@ html,
 body {
   overflow-x: hidden;
 }
+
+
+
 /* ================================
    Eco Challenges Section
 ================================ */

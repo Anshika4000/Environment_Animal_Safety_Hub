@@ -581,17 +581,6 @@ function isInViewport(element) {
   );
 }
 
-/* ===== CONSOLE MESSAGE ===== */
-console.log(
-  "%c🌿 EcoLife - Protect Our Planet & Animals 🐾",
-  "font-size: 20px; font-weight: bold; color: #2e7d32; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);"
-);
-console.log(
-  "%cBuilt with ❤️ for a greener future",
-  "font-size: 14px; color: #666;"
-);
-
-
 /* ===== POPUP MODAL LOGIC ===== */
 
 // Data for all popups

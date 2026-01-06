@@ -2291,3 +2291,51 @@ body.dark-theme .bot-message {
   from {opacity: 0; transform: translateY(10px);}
   to {opacity: 1; transform: translateY(0);}
 }
+
+.dict-card {
+    background:#ffffff;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor:pointer;
+    opacity:0;
+    transform:translateY(20px);
+    animation:fadeInUp 0.6s forwards;
+  }
+
+  .dict-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+  }
+
+  .dict-card h3 {
+    margin-top:0;
+    font-size:1.3rem;
+    color:#2e7d32;
+  }
+
+  .dict-card p {
+    font-size:0.95rem;
+    color:#555;
+    margin:10px 0 0;
+    line-height:1.5;
+  }
+
+  .category-tag {
+    display:inline-block;
+    padding:5px 12px;
+    background:#c8e6c9;
+    color:#2e7d32;
+    font-size:0.8rem;
+    font-weight:600;
+    border-radius:15px;
+    margin-top:10px;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity:1;
+      transform:translateY(0);
+    }
+  }

@@ -22,6 +22,17 @@
             --transition: all 0.3s ease;
         }
         
+        .dark-mode {
+            --primary: #4caf50;
+            --primary-light: #66bb6a;
+            --secondary: #ffb74d;
+            --text-dark: #f0f0f0;
+            --text-light: #b0b0b0;
+            --bg-light: #1a1a2e;
+            --bg-card: #162447;
+            --shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
         /* ===== GLOBAL STYLES ===== */
         * {
             margin: 0;
@@ -34,6 +45,7 @@
             background: var(--bg-light);
             color: var(--text-dark);
             line-height: 1.6;
+            transition: var(--transition);
         }
         
         .container {
@@ -42,11 +54,53 @@
             padding: 0 20px;
         }
         
+        /* ===== THEME TOGGLE ===== */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .theme-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .theme-btn:hover {
+            transform: rotate(30deg) scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+            border-color: var(--primary);
+        }
+        
+        .theme-btn i {
+            font-size: 1.3rem;
+            color: white;
+        }
+        
+        .dark-mode .theme-btn {
+            border-color: var(--primary);
+        }
+        
         /* ===== NAVBAR ===== */
         .navbar {
             background: linear-gradient(135deg, #1b5e20, #2e7d32);
             padding: 20px 0;
             position: relative;
+        }
+        
+        .dark-mode .navbar {
+            background: linear-gradient(135deg, #0a1929, #1a1a2e);
         }
         
         .nav-container {
@@ -57,6 +111,7 @@
             justify-content: space-between;
             align-items: center;
             position: relative;
+            padding-right: 80px;
         }
         
         .logo {
@@ -248,7 +303,51 @@
         .example-icon {
             font-size: 2.5rem;
             margin-bottom: 15px;
-            color: var(--primary);
+        }
+        
+        /* ===== INTERACTIVE QUIZ ===== */
+        .quiz-container {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            margin-top: 40px;
+        }
+        
+        .quiz-question {
+            margin-bottom: 30px;
+        }
+        
+        .quiz-options {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .quiz-option {
+            background: rgba(46, 125, 50, 0.05);
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        
+        .quiz-option:hover {
+            background: rgba(46, 125, 50, 0.1);
+        }
+        
+        .quiz-option.selected {
+            background: rgba(46, 125, 50, 0.2);
+            border-color: var(--primary);
+        }
+        
+        .quiz-result {
+            display: none;
+            background: rgba(46, 125, 50, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
         }
         
         /* ===== RECYCLING BENEFITS ===== */
@@ -301,202 +400,16 @@
             margin-bottom: 10px;
         }
         
-        /* ===== QUIZ STYLES ===== */
-        .quiz-section {
-            background: #f0f9ff;
-        }
-        
-        .quiz-container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: var(--shadow);
-            margin: 0 auto;
-            max-width: 800px;
-        }
-        
-        .quiz-progress {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-            align-items: center;
-        }
-        
-        .progress-bar {
-            flex: 1;
-            height: 8px;
-            background: #e0e0e0;
-            border-radius: 4px;
-            margin-right: 20px;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: var(--primary);
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-        
-        .progress-text {
-            font-weight: 600;
-            color: var(--text-dark);
-            white-space: nowrap;
-        }
-        
-        .quiz-question {
-            margin-bottom: 30px;
-        }
-        
-        .quiz-question h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--text-dark);
-        }
-        
-        .quiz-options {
-            display: grid;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .quiz-option {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
-            padding: 18px 20px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .quiz-option:hover {
-            background: #e8f5e9;
-            border-color: var(--primary-light);
-        }
-        
-        .quiz-option.selected {
-            background: #e8f5e9;
-            border-color: var(--primary);
-            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.1);
-        }
-        
-        .option-letter {
-            width: 35px;
-            height: 35px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-        
-        .quiz-buttons {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin-top: 30px;
-        }
-        
-        .quiz-btn {
-            padding: 14px 30px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .quiz-btn.primary {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .quiz-btn.secondary {
-            background: #f0f0f0;
-            color: var(--text-dark);
-        }
-        
-        .quiz-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .quiz-btn.primary:hover {
-            background: #1b5e20;
-        }
-        
-        .quiz-btn.secondary:hover {
-            background: #e0e0e0;
-        }
-        
-        .quiz-result {
-            display: none;
-            text-align: center;
-            padding: 40px;
-        }
-        
-        .result-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-        }
-        
-        .result-icon.good {
-            color: #4caf50;
-        }
-        
-        .result-icon.average {
-            color: #ff9800;
-        }
-        
-        .result-icon.poor {
-            color: #f44336;
-        }
-        
-        .result-score {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-        
-        .result-message {
-            font-size: 1.2rem;
-            color: var(--text-light);
-            margin-bottom: 30px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .result-details {
-            text-align: left;
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 15px;
-            margin-top: 30px;
-        }
-        
-        .result-details h4 {
-            margin-bottom: 15px;
-            color: var(--text-dark);
-        }
-        
         /* ===== FOOTER ===== */
         footer {
             background: linear-gradient(135deg, #1b5e20, #2e7d32);
             color: white;
             padding: 60px 0 20px;
             margin-top: 80px;
+        }
+        
+        .dark-mode footer {
+            background: linear-gradient(135deg, #0a1929, #1a1a2e);
         }
         
         .footer-content {
@@ -530,28 +443,6 @@
             padding-top: 20px;
             border-top: 1px solid rgba(255,255,255,0.1);
             color: #c8e6c9;
-        }
-        
-        /* ===== BUTTONS ===== */
-        .btn-custom {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 15px 35px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            box-shadow: 0 10px 20px rgba(46, 125, 50, 0.3);
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        
-        .btn-custom:hover {
-            background: #1b5e20;
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(46, 125, 50, 0.4);
         }
         
         /* ===== ANIMATIONS ===== */
@@ -596,13 +487,14 @@
                 left: 0;
             }
             
-            .quiz-buttons {
-                flex-direction: column;
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
             }
             
-            .quiz-btn {
-                width: 100%;
-                justify-content: center;
+            .theme-btn {
+                width: 45px;
+                height: 45px;
             }
         }
         
@@ -623,12 +515,13 @@
                 padding: 30px 20px;
             }
             
-            .quiz-container {
-                padding: 25px;
+            .theme-btn {
+                width: 40px;
+                height: 40px;
             }
             
-            .progress-bar {
-                margin-right: 15px;
+            .theme-btn i {
+                font-size: 1.1rem;
             }
         }
         
@@ -644,18 +537,17 @@
             .section-title {
                 font-size: 1.8rem;
             }
-            
-            .waste-examples {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .quiz-option {
-                padding: 15px;
-            }
         }
     </style>
 </head>
 <body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
     <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-container">
@@ -734,7 +626,7 @@
     </section>
 
     <!-- Common Examples -->
-    <section id="examples" style="background: #f8fff8;">
+    <section id="examples" style="background: var(--bg-card);">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
                 <span class="section-tag">Everyday Items</span>
@@ -793,39 +685,6 @@
                     <p>Batteries, electronics</p>
                 </div>
             </div>
-            
-            <div class="section-header" style="margin-top: 60px;" data-aos="fade-up">
-                <h3 class="section-title" style="font-size: 1.8rem;">What NOT to Include in Dry Waste</h3>
-                <p class="section-subtitle" style="max-width: 800px;">
-                    These items should NOT go into dry waste bins as they require special handling:
-                </p>
-            </div>
-            
-            <div class="grid-3" data-aos="fade-up">
-                <div class="card" style="background: #fff5f5;">
-                    <div class="card-icon" style="color: #f44336;">
-                        <i class="fas fa-apple-alt"></i>
-                    </div>
-                    <h3>Food Waste</h3>
-                    <p>Fruit peels, vegetable scraps, leftovers - these are wet/organic waste</p>
-                </div>
-                
-                <div class="card" style="background: #fff5f5;">
-                    <div class="card-icon" style="color: #f44336;">
-                        <i class="fas fa-syringe"></i>
-                    </div>
-                    <h3>Medical Waste</h3>
-                    <p>Medicines, needles, bandages - require special medical waste disposal</p>
-                </div>
-                
-                <div class="card" style="background: #fff5f5;">
-                    <div class="card-icon" style="color: #f44336;">
-                        <i class="fas fa-vial"></i>
-                    </div>
-                    <h3>Chemical Waste</h3>
-                    <p>Paints, solvents, cleaners - hazardous waste needs special handling</p>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -845,13 +704,12 @@
                     <div class="card">
                         <h3><i class="fas fa-sort"></i> Step-by-Step Segregation</h3>
                         <ul class="benefits-list" style="margin-top: 20px;">
-                            <li><strong>Use separate bins</strong> for different types of dry waste (paper, plastic, glass, metal)</li>
-                            <li><strong>Clean and dry</strong> all recyclable materials before disposal</li>
-                            <li><strong>Remove non-recyclable components</strong> (plastic windows from envelopes, bottle caps)</li>
-                            <li><strong>Flatten cardboard boxes</strong> to save space in recycling bins</li>
-                            <li><strong>Keep e-waste separate</strong> for special disposal at designated centers</li>
-                            <li><strong>Store segregated waste</strong> in clearly labeled containers</li>
-                            <li><strong>Check local guidelines</strong> for specific recycling rules in your area</li>
+                            <li>Use separate bins for different types of dry waste</li>
+                            <li>Clean and dry all recyclable materials before disposal</li>
+                            <li>Remove non-recyclable components (plastic windows from envelopes)</li>
+                            <li>Flatten cardboard boxes to save space</li>
+                            <li>Keep e-waste separate for special disposal</li>
+                            <li>Store segregated waste in labeled containers</li>
                         </ul>
                     </div>
                 </div>
@@ -862,85 +720,11 @@
                          style="width: 100%; border-radius: 20px; box-shadow: var(--shadow);">
                 </div>
             </div>
-            
-            <div style="text-align: center; margin-top: 50px;" data-aos="fade-up">
-                <a href="#quiz" class="btn-custom">
-                    <i class="fas fa-question-circle"></i> Test Your Knowledge
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quiz Section -->
-    <section id="quiz" class="quiz-section">
-        <div class="container">
-            <div class="section-header" data-aos="fade-up">
-                <span class="section-tag">Test Your Knowledge</span>
-                <h2 class="section-title">Dry Waste Quiz</h2>
-                <p class="section-subtitle">
-                    Take this quiz to test your understanding of dry waste segregation and recycling.
-                </p>
-            </div>
-            
-            <div class="quiz-container" data-aos="fade-up">
-                <!-- Quiz Progress -->
-                <div class="quiz-progress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                    <div class="progress-text">
-                        Question <span id="currentQuestion">1</span> of <span id="totalQuestions">5</span>
-                    </div>
-                </div>
-                
-                <!-- Quiz Content -->
-                <div id="quizContent">
-                    <!-- Questions will be inserted here by JavaScript -->
-                </div>
-                
-                <!-- Quiz Buttons -->
-                <div class="quiz-buttons">
-                    <button class="quiz-btn secondary" id="prevBtn" onclick="prevQuestion()" style="display: none;">
-                        <i class="fas fa-arrow-left"></i> Previous
-                    </button>
-                    <button class="quiz-btn primary" id="nextBtn" onclick="nextQuestion()">
-                        Next <i class="fas fa-arrow-right"></i>
-                    </button>
-                    <button class="quiz-btn primary" id="submitBtn" onclick="submitQuiz()" style="display: none;">
-                        <i class="fas fa-paper-plane"></i> Submit Quiz
-                    </button>
-                </div>
-                
-                <!-- Quiz Result -->
-                <div class="quiz-result" id="quizResult">
-                    <div class="result-icon good" id="resultIcon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <div class="result-score" id="resultScore">0/5</div>
-                    <h3 id="resultTitle">Quiz Complete!</h3>
-                    <p class="result-message" id="resultMessage">
-                        You've completed the dry waste quiz. See your results below.
-                    </p>
-                    
-                    <div class="result-details" id="resultDetails">
-                        <!-- Results will be shown here -->
-                    </div>
-                    
-                    <div style="margin-top: 30px;">
-                        <button class="quiz-btn primary" onclick="restartQuiz()">
-                            <i class="fas fa-redo"></i> Try Again
-                        </button>
-                        <a href="#what-is-dry-waste" class="quiz-btn secondary">
-                            <i class="fas fa-book"></i> Review Material
-                        </a>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
     <!-- Recycling Benefits -->
-    <section id="benefits" style="background: #f4fdf4;">
+    <section id="benefits" style="background: var(--bg-card);">
         <div class="container">
             <div class="section-header" data-aos="fade-up">
                 <span class="section-tag">Environmental Impact</span>
@@ -955,94 +739,98 @@
                     <div class="card-icon">
                         <i class="fas fa-tree"></i>
                     </div>
-                    <h3>Saves Natural Resources</h3>
-                    <p>Recycling reduces the need for raw materials, preserving forests, minerals, and water resources for future generations.</p>
+                    <h3>Saves Resources</h3>
+                    <p>Recycling reduces the need for raw materials, preserving natural resources and forests.</p>
                 </div>
                 
                 <div class="card" data-aos="fade-up" data-aos-delay="100">
                     <div class="card-icon">
                         <i class="fas fa-bolt"></i>
                     </div>
-                    <h3>Reduces Energy Consumption</h3>
-                    <p>Recycling uses significantly less energy than producing new products from raw materials - up to 95% less for aluminum!</p>
+                    <h3>Reduces Energy</h3>
+                    <p>Recycling uses less energy than producing new products from raw materials.</p>
                 </div>
                 
                 <div class="card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card-icon">
-                        <i class="fas fa-industry"></i>
-                    </div>
-                    <h3>Reduces Pollution</h3>
-                    <p>Recycling reduces air and water pollution from manufacturing processes and decreases landfill waste.</p>
-                </div>
-            </div>
-            
-            <!-- Additional Benefits -->
-            <div class="grid-3" style="margin-top: 30px;">
-                <div class="card" data-aos="fade-up">
                     <div class="card-icon">
                         <i class="fas fa-landmark"></i>
                     </div>
                     <h3>Creates Jobs</h3>
-                    <p>The recycling industry creates 3-5 times more jobs than landfilling, supporting local economies.</p>
-                </div>
-                
-                <div class="card" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card-icon">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <h3>Saves Money</h3>
-                    <p>Recycling reduces waste disposal costs for communities and creates valuable materials for manufacturers.</p>
-                </div>
-                
-                <div class="card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card-icon">
-                        <i class="fas fa-globe-americas"></i>
-                    </div>
-                    <h3>Fights Climate Change</h3>
-                    <p>Reducing manufacturing emissions and landfill methane helps combat global warming.</p>
+                    <p>The recycling industry creates employment opportunities in collection, processing, and manufacturing.</p>
                 </div>
             </div>
             
             <!-- Statistics -->
-            <div class="section-header" style="margin-top: 80px;" data-aos="fade-up">
-                <h3 class="section-title" style="font-size: 2rem;">Recycling by the Numbers</h3>
-            </div>
-            
             <div class="stats-grid" data-aos="fade-up">
                 <div class="stat-card">
                     <div class="stat-number">75%</div>
-                    <p>Of all waste is recyclable, but only about 30% actually gets recycled</p>
+                    <p>Of all waste is recyclable</p>
                 </div>
                 
                 <div class="stat-card">
                     <div class="stat-number">90%</div>
-                    <p>Energy saved by recycling aluminum compared to producing new aluminum</p>
+                    <p>Energy saved by recycling aluminum</p>
                 </div>
                 
                 <div class="stat-card">
                     <div class="stat-number">17 trees</div>
-                    <p>Saved per ton of recycled paper (along with 7,000 gallons of water)</p>
+                    <p>Saved per ton of recycled paper</p>
                 </div>
                 
                 <div class="stat-card">
                     <div class="stat-number">3-5 times</div>
-                    <p>More jobs created in recycling compared to landfilling the same materials</p>
+                    <p>More jobs in recycling vs landfilling</p>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Interactive Quiz -->
+    <section id="quiz">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-tag">Test Your Knowledge</span>
+                <h2 class="section-title">Dry Waste Quiz</h2>
+                <p class="section-subtitle">
+                    Take this quick quiz to test your understanding of dry waste segregation.
+                </p>
+            </div>
             
-            <div style="text-align: center; margin-top: 50px;" data-aos="fade-up">
-                <div class="card" style="max-width: 800px; margin: 0 auto; background: #e8f5e9;">
-                    <h3><i class="fas fa-lightbulb"></i> Take Action Today!</h3>
-                    <p style="font-size: 1.1rem;">
-                        Start segregating your dry waste today. Every small action counts. 
-                        By recycling properly, you're contributing to a cleaner environment, 
-                        conserving resources, and supporting a circular economy.
-                    </p>
-                    <div style="margin-top: 20px;">
-                        <a href="#what-is-dry-waste" class="btn-custom">
-                            <i class="fas fa-redo"></i> Review Dry Waste Basics
-                        </a>
+            <div class="quiz-container" data-aos="fade-up">
+                <div class="quiz-question">
+                    <h3>Question 1: Which of these is NOT considered dry waste?</h3>
+                </div>
+                
+                <div class="quiz-options" id="quiz1">
+                    <div class="quiz-option" data-correct="false">
+                        A) Plastic water bottle
                     </div>
+                    <div class="quiz-option" data-correct="false">
+                        B) Newspaper
+                    </div>
+                    <div class="quiz-option" data-correct="true">
+                        C) Banana peel
+                    </div>
+                    <div class="quiz-option" data-correct="false">
+                        D) Glass jar
+                    </div>
+                </div>
+                
+                <button class="btn-check" onclick="checkAnswer(1)" style="
+                    background: var(--primary);
+                    color: white;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 30px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    transition: var(--transition);
+                ">
+                    Check Answer
+                </button>
+                
+                <div class="quiz-result" id="result1">
+                    <!-- Result will appear here -->
                 </div>
             </div>
         </div>
@@ -1063,7 +851,7 @@
                         <a href="../index.html">Home</a>
                         <a href="plant-care.html">Plant Care</a>
                         <a href="quiz.html">Kids Zone</a>
-                        <a href="#what-is-dry-waste">Dry Waste Guide</a>
+                        <a href="#quiz">Dry Waste Quiz</a>
                     </div>
                 </div>
                 
@@ -1091,6 +879,41 @@
             once: true
         });
         
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        
+        // Check for saved theme preference
+        if (localStorage.getItem('dryWasteDarkMode') === 'enabled') {
+            enableDarkMode();
+        }
+        
+        function enableDarkMode() {
+            document.body.classList.add('dark-mode');
+            themeIcon.className = 'fas fa-sun';
+            localStorage.setItem('dryWasteDarkMode', 'enabled');
+        }
+        
+        function disableDarkMode() {
+            document.body.classList.remove('dark-mode');
+            themeIcon.className = 'fas fa-moon';
+            localStorage.setItem('dryWasteDarkMode', 'disabled');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            if (document.body.classList.contains('dark-mode')) {
+                disableDarkMode();
+            } else {
+                enableDarkMode();
+            }
+            
+            // Add click animation
+            themeToggle.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                themeToggle.style.transform = '';
+            }, 150);
+        });
+        
         // Mobile Navbar Toggle
         const navToggle = document.getElementById('navToggle');
         const navLinks = document.getElementById('navLinks');
@@ -1101,6 +924,73 @@
                 navToggle.classList.toggle('active');
             });
         }
+        
+        // Quiz Functionality
+        function checkAnswer(quizNumber) {
+            const quizOptions = document.querySelectorAll(`#quiz${quizNumber} .quiz-option`);
+            const resultDiv = document.getElementById(`result${quizNumber}`);
+            
+            let selectedOption = null;
+            let correctAnswer = null;
+            
+            // Find selected option and correct answer
+            quizOptions.forEach(option => {
+                if (option.classList.contains('selected')) {
+                    selectedOption = option;
+                }
+                if (option.getAttribute('data-correct') === 'true') {
+                    correctAnswer = option.textContent.trim();
+                }
+            });
+            
+            if (!selectedOption) {
+                resultDiv.innerHTML = '<p style="color: #ff9800;">Please select an answer first!</p>';
+                resultDiv.style.display = 'block';
+                return;
+            }
+            
+            const isCorrect = selectedOption.getAttribute('data-correct') === 'true';
+            
+            if (isCorrect) {
+                resultDiv.innerHTML = `
+                    <p style="color: #4CAF50; font-weight: 600;">
+                        <i class="fas fa-check-circle"></i> Correct!
+                    </p>
+                    <p>Great job! That's the right answer. Banana peels are wet waste, not dry waste.</p>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <p style="color: #f44336; font-weight: 600;">
+                        <i class="fas fa-times-circle"></i> Not quite right.
+                    </p>
+                    <p>The correct answer is: <strong>${correctAnswer}</strong></p>
+                    <p>Banana peels are biodegradable wet waste, while the others are dry waste.</p>
+                `;
+            }
+            
+            resultDiv.style.display = 'block';
+        }
+        
+        // Add click handlers to quiz options
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selection from all options in this quiz
+                const parentQuiz = this.parentElement;
+                parentQuiz.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Select this option
+                this.classList.add('selected');
+                
+                // Hide previous result
+                const quizId = parentQuiz.id.replace('quiz', '');
+                const resultDiv = document.getElementById(`result${quizId}`);
+                if (resultDiv) {
+                    resultDiv.style.display = 'none';
+                }
+            });
+        });
         
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1115,293 +1005,9 @@
                         top: targetElement.offsetTop - 80,
                         behavior: 'smooth'
                     });
-                    
-                    // Close mobile menu if open
-                    if (navLinks.classList.contains('active')) {
-                        navLinks.classList.remove('active');
-                        navToggle.classList.remove('active');
-                    }
                 }
             });
         });
-        
-        // Close menu when clicking outside on mobile
-        document.addEventListener('click', function(event) {
-            const isClickInsideNav = document.querySelector('.navbar').contains(event.target);
-            const isClickOnToggle = navToggle.contains(event.target);
-            
-            if (!isClickInsideNav && !isClickOnToggle && window.innerWidth <= 992) {
-                navLinks.classList.remove('active');
-                navToggle.classList.remove('active');
-            }
-        });
-        
-        // ===== QUIZ FUNCTIONALITY =====
-        
-        const quizData = [
-            {
-                question: "Which of these items is considered dry waste?",
-                options: [
-                    { text: "Banana peel", correct: false },
-                    { text: "Plastic water bottle", correct: true },
-                    { text: "Leftover food", correct: false },
-                    { text: "Tea leaves", correct: false }
-                ],
-                explanation: "Plastic water bottles are dry waste because they are non-biodegradable and recyclable. Banana peels, leftover food, and tea leaves are wet/organic waste."
-            },
-            {
-                question: "What should you do with paper before putting it in dry waste?",
-                options: [
-                    { text: "Soak it in water", correct: false },
-                    { text: "Tear it into small pieces", correct: false },
-                    { text: "Clean and dry it", correct: true },
-                    { text: "Mix it with food waste", correct: false }
-                ],
-                explanation: "Paper should be clean and dry before recycling. Wet or contaminated paper cannot be recycled properly."
-            },
-            {
-                question: "Which item requires special disposal and should NOT go in regular dry waste?",
-                options: [
-                    { text: "Glass jar", correct: false },
-                    { text: "Newspaper", correct: false },
-                    { text: "Used battery", correct: true },
-                    { text: "Plastic container", correct: false }
-                ],
-                explanation: "Used batteries are e-waste and contain hazardous materials. They should be taken to special collection centers, not put in regular dry waste."
-            },
-            {
-                question: "What percentage of energy is saved by recycling aluminum compared to making new aluminum?",
-                options: [
-                    { text: "25%", correct: false },
-                    { text: "50%", correct: false },
-                    { text: "75%", correct: false },
-                    { text: "90%", correct: true }
-                ],
-                explanation: "Recycling aluminum saves about 90% of the energy needed to make new aluminum from raw materials, making it one of the most energy-efficient recycling processes."
-            },
-            {
-                question: "How does proper dry waste segregation help the environment?",
-                options: [
-                    { text: "Increases landfill space", correct: false },
-                    { text: "Reduces pollution and conserves resources", correct: true },
-                    { text: "Makes waste collection easier", correct: false },
-                    { text: "All of the above", correct: false }
-                ],
-                explanation: "Proper segregation reduces pollution from manufacturing, conserves natural resources, saves energy, and reduces landfill waste. While it does make collection easier, that's not the primary environmental benefit."
-            }
-        ];
-        
-        let currentQuestion = 0;
-        let userAnswers = new Array(quizData.length).fill(null);
-        let quizCompleted = false;
-        
-        // Initialize quiz
-        function initQuiz() {
-            updateProgress();
-            displayQuestion();
-            updateButtons();
-        }
-        
-        // Display current question
-        function displayQuestion() {
-            const quizContent = document.getElementById('quizContent');
-            const question = quizData[currentQuestion];
-            
-            let optionsHTML = '';
-            const letters = ['A', 'B', 'C', 'D'];
-            
-            question.options.forEach((option, index) => {
-                const isSelected = userAnswers[currentQuestion] === index;
-                optionsHTML += `
-                    <div class="quiz-option ${isSelected ? 'selected' : ''}" onclick="selectOption(${index})">
-                        <div class="option-letter">${letters[index]}</div>
-                        <div>${option.text}</div>
-                    </div>
-                `;
-            });
-            
-            quizContent.innerHTML = `
-                <div class="quiz-question">
-                    <h3>${question.question}</h3>
-                </div>
-                <div class="quiz-options">
-                    ${optionsHTML}
-                </div>
-            `;
-        }
-        
-        // Select an option
-        function selectOption(optionIndex) {
-            userAnswers[currentQuestion] = optionIndex;
-            displayQuestion();
-            
-            // If this is the last question, show submit button
-            if (currentQuestion === quizData.length - 1) {
-                document.getElementById('submitBtn').style.display = 'flex';
-                document.getElementById('nextBtn').style.display = 'none';
-            }
-        }
-        
-        // Navigate to next question
-        function nextQuestion() {
-            if (currentQuestion < quizData.length - 1) {
-                currentQuestion++;
-                updateProgress();
-                displayQuestion();
-                updateButtons();
-            }
-        }
-        
-        // Navigate to previous question
-        function prevQuestion() {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                updateProgress();
-                displayQuestion();
-                updateButtons();
-            }
-        }
-        
-        // Update progress bar and question counter
-        function updateProgress() {
-            const progressFill = document.getElementById('progressFill');
-            const currentQuestionElement = document.getElementById('currentQuestion');
-            const totalQuestionsElement = document.getElementById('totalQuestions');
-            
-            const progress = ((currentQuestion + 1) / quizData.length) * 100;
-            progressFill.style.width = `${progress}%`;
-            
-            currentQuestionElement.textContent = currentQuestion + 1;
-            totalQuestionsElement.textContent = quizData.length;
-        }
-        
-        // Update navigation buttons
-        function updateButtons() {
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const submitBtn = document.getElementById('submitBtn');
-            
-            // Show/hide previous button
-            if (currentQuestion > 0) {
-                prevBtn.style.display = 'flex';
-            } else {
-                prevBtn.style.display = 'none';
-            }
-            
-            // Show/hide next button
-            if (currentQuestion < quizData.length - 1) {
-                nextBtn.style.display = 'flex';
-                submitBtn.style.display = 'none';
-            } else {
-                nextBtn.style.display = 'none';
-                if (userAnswers[currentQuestion] !== null) {
-                    submitBtn.style.display = 'flex';
-                }
-            }
-        }
-        
-        // Submit quiz and show results
-        function submitQuiz() {
-            if (userAnswers.includes(null)) {
-                alert('Please answer all questions before submitting!');
-                return;
-            }
-            
-            quizCompleted = true;
-            
-            // Calculate score
-            let score = 0;
-            let resultsHTML = '';
-            
-            quizData.forEach((question, index) => {
-                const userAnswerIndex = userAnswers[index];
-                const isCorrect = question.options[userAnswerIndex].correct;
-                
-                if (isCorrect) score++;
-                
-                const letters = ['A', 'B', 'C', 'D'];
-                const userAnswerLetter = letters[userAnswerIndex];
-                const correctAnswerIndex = question.options.findIndex(opt => opt.correct);
-                const correctAnswerLetter = letters[correctAnswerIndex];
-                
-                resultsHTML += `
-                    <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e0e0e0;">
-                        <p><strong>Q${index + 1}:</strong> ${question.question}</p>
-                        <p style="color: ${isCorrect ? '#4caf50' : '#f44336'}; margin: 5px 0;">
-                            <i class="fas fa-${isCorrect ? 'check' : 'times'}"></i> 
-                            Your answer: ${userAnswerLetter}. ${question.options[userAnswerIndex].text}
-                        </p>
-                        ${!isCorrect ? `<p style="color: #4caf50; margin: 5px 0;">
-                            <i class="fas fa-check"></i> 
-                            Correct answer: ${correctAnswerLetter}. ${question.options[correctAnswerIndex].text}
-                        </p>` : ''}
-                        <p style="color: #666; font-size: 0.9rem; margin-top: 10px;">
-                            <i class="fas fa-lightbulb"></i> ${question.explanation}
-                        </p>
-                    </div>
-                `;
-            });
-            
-            // Update result display
-            const resultScore = document.getElementById('resultScore');
-            const resultTitle = document.getElementById('resultTitle');
-            const resultMessage = document.getElementById('resultMessage');
-            const resultIcon = document.getElementById('resultIcon');
-            const resultDetails = document.getElementById('resultDetails');
-            
-            resultScore.textContent = `${score}/${quizData.length}`;
-            resultDetails.innerHTML = resultsHTML;
-            
-            // Set result based on score
-            if (score === quizData.length) {
-                resultTitle.textContent = "Perfect! You're a Recycling Expert!";
-                resultMessage.textContent = "Excellent work! You have a thorough understanding of dry waste segregation and recycling practices.";
-                resultIcon.innerHTML = '<i class="fas fa-trophy"></i>';
-                resultIcon.className = 'result-icon good';
-            } else if (score >= quizData.length * 0.7) {
-                resultTitle.textContent = "Great Job!";
-                resultMessage.textContent = "Good work! You have a solid understanding of dry waste management. Review the areas you missed to become an expert.";
-                resultIcon.innerHTML = '<i class="fas fa-star"></i>';
-                resultIcon.className = 'result-icon good';
-            } else if (score >= quizData.length * 0.5) {
-                resultTitle.textContent = "Good Effort!";
-                resultMessage.textContent = "You have basic knowledge of dry waste. Review the material to improve your understanding of proper segregation.";
-                resultIcon.innerHTML = '<i class="fas fa-thumbs-up"></i>';
-                resultIcon.className = 'result-icon average';
-            } else {
-                resultTitle.textContent = "Keep Learning!";
-                resultMessage.textContent = "You're just getting started with dry waste knowledge. Review the material and try the quiz again.";
-                resultIcon.innerHTML = '<i class="fas fa-book"></i>';
-                resultIcon.className = 'result-icon poor';
-            }
-            
-            // Hide quiz content and show results
-            document.getElementById('quizContent').style.display = 'none';
-            document.querySelector('.quiz-progress').style.display = 'none';
-            document.querySelector('.quiz-buttons').style.display = 'none';
-            document.getElementById('quizResult').style.display = 'block';
-            
-            // Scroll to results
-            document.getElementById('quizResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-        
-        // Restart quiz
-        function restartQuiz() {
-            currentQuestion = 0;
-            userAnswers = new Array(quizData.length).fill(null);
-            quizCompleted = false;
-            
-            // Reset display
-            document.getElementById('quizContent').style.display = 'block';
-            document.querySelector('.quiz-progress').style.display = 'flex';
-            document.querySelector('.quiz-buttons').style.display = 'flex';
-            document.getElementById('quizResult').style.display = 'none';
-            
-            initQuiz();
-        }
-        
-        // Initialize quiz on page load
-        document.addEventListener('DOMContentLoaded', initQuiz);
     </script>
 </body>
 </html>

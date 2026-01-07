@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Forest Ecosystem Learning Module</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link rel="stylesheet" href="../css/pages/kids-learning.css">
+<link rel="stylesheet" href="../css/pages/climate-learning.css">
+
+</head>
+
+<body>
+
+  <div class="back-navigation">
+    <button onclick="window.location.href='./kids-learning.html'" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i> Back to Hub
+    </button>
+  </div>
+  
+  <section class="hero">
+    <div class="hero-content">
+      <h1>🌳 FOREST ECOSYSTEM – COMPLETE LEARNING MODULE</h1>
+      <p>Explore about forests and become a Forest Guardian!</p>
+      <div class="badge-display" id="badgeDisplay">
+        <span class="badge-text">EcoSystem Warrior: <strong id="badgeCount">0</strong> 🎖️</span>
+      </div>
+    </div>
+  </section>
+<div class="container">
+<section data-aos="fade-up">
+  <h2>1. Introduction to Forest Ecosystems</h2>
+  <p>
+    A forest ecosystem is a natural system made up of trees, plants, animals,
+    microorganisms, soil, water, and climate interacting together.
+    Forests are one of the most important ecosystems on Earth.
+  </p>
+  <p>
+    They provide oxygen, store carbon, support biodiversity, and help regulate
+    climate and water cycles.
+  </p>
+</section>
+
+<section data-aos="fade-up">
+  <h2>2. Types of Forests</h2>
+  <p>Forests are classified based on climate and location.</p>
+  <ul>
+    <li>Tropical Forests</li>
+    <li>Temperate Forests</li>
+    <li>Boreal (Taiga) Forests</li>
+    <li>Mangrove Forests</li>
+    <li>Montane Forests</li>
+  </ul>
+</section>
+
+<section data-aos="fade-up">
+  <h2>3. Structure of a Forest Ecosystem</h2>
+  <p>Forests have different layers that support life.</p>
+  <ul>
+    <li>Emergent Layer</li>
+    <li>Canopy Layer</li>
+    <li>Understory</li>
+    <li>Forest Floor</li>
+  </ul>
+</section>
+
+<section data-aos="fade-up">
+  <h2>4. Forest Biodiversity</h2>
+  <p>
+    Forests are home to more than 80% of terrestrial species.
+    This includes plants, mammals, birds, insects, fungi, and microorganisms.
+  </p>
+</section>
+
+<section data-aos="fade-up">
+  <h2>5. Role of Forests in Climate Regulation</h2>
+  <p>
+    Forests act as carbon sinks by absorbing carbon dioxide and releasing oxygen.
+    They help reduce global warming and stabilize temperatures.
+  </p>
+</section>
+
+<section data-aos="fade-up">
+  <h2>6. Forests and the Water Cycle</h2>
+  <ul>
+    <li>Maintain groundwater levels</li>
+    <li>Reduce floods</li>
+    <li>Prevent soil erosion</li>
+    <li>Influence rainfall patterns</li>
+  </ul>
+</section>
+
+<section data-aos="fade-up">
+  <h2>7. Soil and Nutrient Cycle in Forests</h2>
+  <p>
+    Dead leaves and plants decompose on the forest floor,
+    enriching the soil with nutrients needed for plant growth.
+  </p>
+</section>
+
+<section data-aos="fade-up">
+  <h2>8. Forest Food Chains and Food Webs</h2>
+  <p>
+    Energy flows from producers to consumers and decomposers.
+  </p>
+  <ul>
+    <li>Plants → Herbivores</li>
+    <li>Herbivores → Carnivores</li>
+    <li>Decomposers recycle nutrients</li>
+  </ul>
+</section>
+
+<section data-aos="fade-up">
+  <h2>9. Human Dependence on Forests</h2>
+  <ul>
+    <li>Oxygen and clean air</li>
+    <li>Food and medicine</li>
+    <li>Timber and fuel</li>
+    <li>Livelihoods for communities</li>
+  </ul>
+</section>
+
+<section data-aos="fade-up">
+  <h2>10. Deforestation</h2>
+  <p>
+    Deforestation is the large-scale clearing of forests
+    for agriculture, urbanization, logging, and mining.
+  </p>
+</section>
+
+<section data-aos="fade-up">
+  <h2>11. Impacts of Deforestation</h2>
+  <ul>
+    <li>Loss of biodiversity</li>
+    <li>Increase in climate change</li>
+    <li>Soil erosion</li>
+    <li>Disrupted water cycle</li>
+  </ul>
+</section>
+
+<section data-aos="fade-up">
+  <h2>12. Forest Degradation</h2>
+  <p>
+    Forest degradation occurs when forest quality declines due to pollution,
+    invasive species, overgrazing, or unsustainable use.
+  </p>
+</section>
+
+<section data-aos="fade-up">
+  <h2>13. Forest Conservation</h2>
+  <ul>
+    <li>Protected areas</li>
+    <li>Wildlife sanctuaries</li>
+    <li>Sustainable forest management</li>
+  </ul>
+</section>
+
+<section data-aos="fade-up">
+  <h2>14. Afforestation and Reforestation</h2>
+  <p>
+    Afforestation is planting trees in new areas, while reforestation
+    restores forests that were previously destroyed.
+  </p>
+</section>
+
+<section data-aos="fade-up">
+  <h2>15. Role of Individuals in Forest Protection</h2>
+  <ul>
+    <li>Reduce paper usage</li>
+    <li>Plant trees</li>
+    <li>Support eco-friendly products</li>
+    <li>Spread awareness</li>
+  </ul>
+</section>
+
+<section class="quiz-section" data-aos="fade-up">
+  <h2>🧠 Forest Ecosystem Knowledge Quiz</h2>
+  <p class="quiz-desc">
+    Answer all questions. Score <b>4 or more</b> to unlock your Forest Guardian Badge 🌳
+  </p>
+
+  <div class="quiz-card">
+    <p>1️⃣ What is a forest ecosystem?</p>
+    <button onclick="checkAnswer(this,true)">A community of plants, animals, and environment</button>
+    <button onclick="checkAnswer(this,false)">Only a group of trees</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="quiz-card">
+    <p>2️⃣ Which layer of the forest receives the most sunlight?</p>
+    <button onclick="checkAnswer(this,true)">Canopy layer</button>
+    <button onclick="checkAnswer(this,false)">Forest floor</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="quiz-card">
+    <p>3️⃣ Forests help fight climate change by?</p>
+    <button onclick="checkAnswer(this,true)">Absorbing carbon dioxide</button>
+    <button onclick="checkAnswer(this,false)">Producing pollution</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="quiz-card">
+    <p>4️⃣ What is deforestation?</p>
+    <button onclick="checkAnswer(this,true)">Large-scale clearing of forests</button>
+    <button onclick="checkAnswer(this,false)">Planting more trees</button>
+    <div class="result"></div>
+  </div>
+
+  <div class="quiz-card">
+    <p>5️⃣ Which action helps protect forests?</p>
+    <button onclick="checkAnswer(this,true)">Reducing paper usage</button>
+    <button onclick="checkAnswer(this,false)">Illegal logging</button>
+    <div class="result"></div>
+  </div>
+</section>
+
+
+<section class="calculator-wrapper" data-aos="zoom-in">
+  <div class="calculator-box">
+    <h2>🌳 Save the Forest Ecosystem</h2>
+    <p class="calc-desc">
+      Manage the forest wisely for <b>7 years</b>.  
+      Every decision affects trees, animals, and climate.
+    </p>
+
+    <p>📅 Year: <b id="year">1</b> / 7</p>
+    <p>🌲 Forest Health</p>
+
+    <progress id="forestBar" value="100" max="100" style="width:100%"></progress>
+    <p id="forestText">100%</p>
+
+    <div style="margin-top:15px;display:flex;gap:10px;flex-wrap:wrap">
+      <button onclick="forestAction('plant')">🌱 Plant Trees</button>
+      <button onclick="forestAction('protect')">🛡️ Protect Wildlife</button>
+      <button onclick="forestAction('laws')">📜 Enforce Forest Laws</button>
+      <button onclick="forestAction('cut')">🪓 Allow Deforestation</button>
+    </div>
+
+    <p id="forestMsg" style="margin-top:15px;font-weight:600"></p>
+    <p id="forestScore">⭐ Score: 0</p>
+
+    <button onclick="resetForest()" style="margin-top:10px">
+      🔄 Reset Game
+    </button>
+  </div>
+</section>
+
+<!-- BLOGS -->
+<section data-aos="fade-up">
+  <h2>🌐 External Forest Ecosystem Blogs</h2>
+
+  <div class="blog-grid">
+    <div class="blog-card">
+      <h4>World Wildlife Fund</h4>
+      <p>Forest conservation and biodiversity protection.</p>
+      <a href="https://www.worldwildlife.org" target="_blank">Visit →</a>
+    </div>
+
+    <div class="blog-card">
+      <h4>FAO Forest Resources</h4>
+      <p>Global forest data and sustainability efforts.</p>
+      <a href="https://www.fao.org/forestry" target="_blank">Explore →</a>
+    </div>
+
+    <div class="blog-card">
+      <h4>UN Environment – Forests</h4>
+      <p>International forest protection initiatives.</p>
+      <a href="https://www.unep.org/explore-topics/forests" target="_blank">Read →</a>
+    </div>
+
+    <div class="blog-card">
+      <h4>National Geographic – Forests</h4>
+      <p>Stories and research on forest ecosystems.</p>
+      <a href="https://www.nationalgeographic.com/environment" target="_blank">Read →</a>
+    </div>
+
+    <div class="blog-card">
+      <h4>Rainforest Alliance</h4>
+      <p>Sustainable forestry and ethical practices.</p>
+      <a href="https://www.rainforest-alliance.org" target="_blank">Learn More →</a>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+🌱 Learn Today • Protect Tomorrow • Act Now 🌱
+</footer>
+
+
+<div class="badge-modal" id="badgeModal">
+  <div class="badge-content">
+    <h3>🏆 Badge Unlocked!</h3>
+    <p>You scored <span id="finalScore"></span>/5</p>
+    <div class="badge-icon"><img src="../assets/badges/ecosystem.png" alt="Badge"></div>
+    <p class="badge-text">
+      Congratulations! You are now an <b>Ecosystem Warrior</b>.  
+      Keep protecting our planet 🌍
+    </p>
+    <button onclick="closeBadge()">Close</button>
+  </div>
+</div>
+
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+let year, forestHealth, forestScore, lossRate;
+
+function initForest() {
+  year = 1;
+  forestHealth = 100;
+  forestScore = 0;
+  lossRate = 12;
+
+  updateForestUI();
+  document.getElementById("forestMsg").innerText =
+    "🌍 Forest is healthy. Begin conservation!";
+}
+
+function forestAction(action) {
+  if (year > 7 || forestHealth <= 0) return;
+
+  forestHealth -= lossRate;
+
+  let msg = "";
+
+  if (action === "plant") {
+    forestHealth += 15;
+    forestScore += 5;
+    msg = "🌱 Trees planted successfully!";
+  }
+
+  if (action === "protect") {
+    forestHealth += 10;
+    forestScore += 4;
+    msg = "🛡️ Wildlife protected!";
+  }
+
+  if (action === "laws") {
+    forestHealth += 8;
+    forestScore += 3;
+    msg = "📜 Illegal logging reduced!";
+  }
+
+  if (action === "cut") {
+    forestHealth -= 18;
+    forestScore -= 6;
+    msg = "🪓 Deforestation increased!";
+  }
+
+  // Random disaster
+  const event = Math.random();
+  if (event < 0.2) {
+    forestHealth -= 15;
+    msg += " 🔥 Forest fire occurred!";
+  } else if (event > 0.85) {
+    forestHealth += 8;
+    msg += " 🌧️ Good rainfall boosted growth!";
+  }
+
+  forestHealth = Math.max(0, Math.min(100, forestHealth));
+  document.getElementById("forestMsg").innerText = msg;
+
+  if (forestHealth <= 0) {
+    document.getElementById("forestMsg").innerText =
+      "🚨 FOREST COLLAPSED! Ecosystem destroyed.";
+    endForest();
+    return;
+  }
+
+  if (year === 7) {
+    document.getElementById("forestMsg").innerText =
+      forestScore >= 20
+        ? "🏆 FOREST GUARDIAN BADGE UNLOCKED!"
+        : "⚠️ Forest survived, but needs better care.";
+    endForest();
+    return;
+  }
+
+  year++;
+  updateForestUI();
+}
+
+function updateForestUI() {
+  document.getElementById("year").innerText = year;
+  document.getElementById("forestBar").value = forestHealth;
+  document.getElementById("forestText").innerText = forestHealth + "%";
+  document.getElementById("forestScore").innerText =
+    "⭐ Score: " + forestScore;
+}
+
+function endForest() {
+  document.querySelectorAll("button").forEach(btn => {
+    if (!btn.innerText.includes("Reset")) btn.disabled = true;
+  });
+}
+
+function resetForest() {
+  document.querySelectorAll("button").forEach(btn => btn.disabled = false);
+  initForest();
+}
+
+initForest();
+
+let score = 0;
+let answeredCount = 0;
+
+function checkAnswer(btn, correct) {
+  const card = btn.parentElement;
+  const result = card.querySelector(".result");
+
+  if (card.classList.contains("answered")) return;
+
+  card.classList.add("answered");
+  answeredCount++;
+
+  if (correct) {
+    score++;
+    result.textContent = "✅ Correct";
+    result.classList.add("correct");
+  } else {
+    result.textContent = "❌ Incorrect";
+    result.classList.add("wrong");
+  }
+
+  if (answeredCount === 5 && score >= 4) {
+    setTimeout(showBadge, 800);
+  }
+}
+
+function showBadge() {
+  document.getElementById("finalScore").innerText = score;
+  document.getElementById("badgeModal").classList.add("show");
+}
+
+function closeBadge() {
+  document.getElementById("badgeModal").classList.remove("show");
+}
+
+  AOS.init({
+    duration: 1000,
+    once: true,
+    easing: 'ease-in-out'
+  });
+
+</script>
+
+</body>
+</html>

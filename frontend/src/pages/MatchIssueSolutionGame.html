@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Eco Card Quest</title>
+
+<style>
+:root {
+  --eco-bg: #eaf7f1;
+  --eco-primary: #2e7d32;
+  --eco-secondary: #66bb6a;
+  --eco-wrong: #e53935;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--eco-bg);
+  min-height: 100vh;
+}
+
+/* START SCREEN */
+.start-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.start-screen h1 {
+  color: var(--eco-primary);
+  font-size: 2.2rem;
+}
+
+.start-screen p {
+  max-width: 500px;
+  font-size: 1rem;
+  margin: 10px 0 20px;
+}
+
+.start-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.start-options button,
+.start-btn {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: var(--eco-secondary);
+  color: #fff;
+  font-size: 1rem;
+}
+
+.start-btn {
+  margin-top: 20px;
+  background: var(--eco-primary);
+  font-size: 1.2rem;
+  padding: 15px 25px;
+  animation: pulse 1.5s infinite;
+}
+
+header {
+  background: var(--eco-primary);
+  color: #fff;
+  text-align: center;
+  padding: 14px;
+}
+
+.game {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  padding: 16px;
+}
+
+.column {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.column h2 {
+  text-align: center;
+  color: var(--eco-primary);
+}
+
+.item {
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  background: #f4fdf7;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.item:hover {
+  transform: scale(1.02);
+}
+
+.item.selected {
+  border: 2px dashed var(--eco-primary);
+}
+
+.item.correct {
+  background: #e8f5e9;
+  border: 2px solid var(--eco-primary);
+}
+
+.item.wrong {
+  background: #ffebee;
+  border: 2px solid var(--eco-wrong);
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+footer {
+  text-align: center;
+  padding: 12px;
+  font-weight: bold;
+  color: var(--eco-primary);
+}
+
+.result {
+  display: none;
+  text-align: center;
+  padding: 30px;
+}
+
+@media (max-width: 768px) {
+  .game {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="startScreen">
+  <div class="hero" style="
+    padding:60px 20px;
+    text-align:center;
+    background:linear-gradient(135deg,#2e7d32,#66bb6a,#81c784);
+    color:white;
+    border-radius:0 0 40px 40px;
+    animation: fadeScale 1s ease forwards;
+  ">
+    <h1>🌱 ECO CARD QUEST 🌿</h1>
+    <p>Match environmental issues with their correct solutions and learn eco-friendly habits!</p>
+  </div>
+
+  <div class="card" style="
+    max-width:800px;
+    margin:40px auto;
+    padding:30px;
+    border-radius:25px;
+    box-shadow:0 15px 30px rgba(0,0,0,0.12);
+    text-align:center;
+    animation: fadeScale 1.2s ease forwards;
+  ">
+    <h2>🎮 How to Play</h2>
+    <p>
+      🌍 Select an environmental issue<br>
+      💡 Then click the correct solution<br>
+      ⭐ +1 point for each correct match<br>
+      ❌ Wrong match triggers an animation
+    </p>
+
+    <h3>👉 Choose Number of Issues</h3>
+    <div class="start-options">
+      <button onclick="selectCount(5)">5</button>
+      <button onclick="selectCount(10)">10</button>
+      <button onclick="selectCount(15)">15</button>
+      <button onclick="selectCount(20)">20</button>
+    </div>
+
+    <div style="margin-top:30px;">
+      <button class="start-btn" onclick="beginGame()">▶ Start Game</button>
+    </div>
+  </div>
+</div>
+
+<div id="gameScreen" style="display:none;">
+  <header>
+    <h2>🌍 Match the Following</h2>
+  </header>
+
+  <div id="game" class="game"></div>
+
+  <footer>
+    ⭐ Score: <span id="score">0</span>
+  </footer>
+</div>
+
+<script>
+const data = [
+  ["Plastic Pollution", "Reduce single-use plastics"],
+  ["Deforestation", "Plant more trees"],
+  ["Water Wastage", "Practice water conservation"],
+  ["Air Pollution", "Use public transport"],
+  ["Climate Change", "Reduce carbon emissions"],
+  ["E-Waste", "Recycle electronics"],
+  ["Poaching", "Protect wildlife laws"],
+  ["Global Warming", "Adopt renewable energy"],
+  ["Food Waste", "Compost leftovers"],
+  ["Biodiversity Loss", "Protect natural habitats"],
+  ["Water Pollution", "Treat industrial waste"],
+  ["Overfishing", "Sustainable fishing"],
+  ["Noise Pollution", "Limit loud activities"],
+  ["Urban Heat", "Increase green spaces"],
+  ["Plastic Bags", "Use cloth bags"],
+  ["Carbon Footprint", "Eco-friendly transport"],
+  ["Wildfires", "Prevent deforestation"],
+  ["Ocean Pollution", "Avoid dumping waste"],
+  ["Energy Crisis", "Improve efficiency"],
+  ["Soil Degradation", "Organic farming"]
+];
+
+let selectedCount = 5;
+let selectedIssue = null;
+let score = 0;
+
+function selectCount(count) {
+  selectedCount = count;
+}
+
+function beginGame() {
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("gameScreen").style.display = "block";
+  startGame();
+}
+
+function startGame() {
+  const game = document.getElementById("game");
+  game.innerHTML = "";
+  score = 0;
+  document.getElementById("score").textContent = score;
+
+  const set = shuffle([...data]).slice(0, selectedCount);
+  const issues = set.map(d => d[0]);
+  const solutions = shuffle(set.map(d => d[1]));
+
+  const left = document.createElement("div");
+  left.className = "column";
+  left.innerHTML = "<h2>🌍 Issues</h2>";
+
+  const right = document.createElement("div");
+  right.className = "column";
+  right.innerHTML = "<h2>💡 Solutions</h2>";
+
+  issues.forEach(issue => {
+    const div = document.createElement("div");
+    div.className = "item";
+    div.textContent = issue;
+    div.onclick = () => {
+      document.querySelectorAll(".item").forEach(i => i.classList.remove("selected"));
+      div.classList.add("selected");
+      selectedIssue = issue;
+    };
+    left.appendChild(div);
+  });
+
+  solutions.forEach(sol => {
+    const div = document.createElement("div");
+    div.className = "item";
+    div.textContent = sol;
+    div.onclick = () => match(div, sol, set);
+    right.appendChild(div);
+  });
+
+  game.appendChild(left);
+  game.appendChild(right);
+}
+
+function match(el, sol, set) {
+  if (!selectedIssue) return;
+
+  const correct = set.find(d => d[0] === selectedIssue)[1];
+
+  if (sol === correct) {
+    el.classList.add("correct");
+    [...document.querySelectorAll(".item")]
+      .find(i => i.textContent === selectedIssue)
+      .classList.add("correct");
+
+    score++;
+    document.getElementById("score").textContent = score;
+    selectedIssue = null;
+
+    if (score === selectedCount) showResult();
+  } else {
+    el.classList.add("wrong");
+    setTimeout(() => el.classList.remove("wrong"), 300);
+  }
+}
+
+function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+</script>
+
+</body>
+</html>

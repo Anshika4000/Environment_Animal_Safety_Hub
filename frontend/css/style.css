@@ -206,7 +206,7 @@ html {
 
 body {
   font-family: var(--font-primary);
-  font-size: 16px;
+  font-size: var(--base-font-size, 16px);
   line-height: 1.6;
   color: var(--text-primary);
   background-color: var(--bg-primary);
@@ -1352,6 +1352,52 @@ body.dark-theme textarea {
   background: #020617;
   color: #e5e7eb;
   border: 1px solid #334155;
+}
+
+/* Font Size Controls */
+.font-size-controls {
+  display: flex;
+  gap: 4px;
+  margin-right: 8px;
+}
+
+.font-size-btn {
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 8px 10px;
+  border-radius: 50%;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  font-weight: 600;
+}
+
+.font-size-btn:hover:not(.disabled) {
+  background: var(--primary-color);
+  color: var(--text-light);
+  transform: scale(1.1);
+}
+
+.font-size-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--border-color);
+  color: var(--text-muted);
+}
+
+.font-size-btn i {
+  font-size: 0.8rem;
+}
+
+/* Font Size Transition */
+.font-size-transitioning * {
+  transition: font-size 0.3s ease !important;
 }
 
 /* 🌙 Toggle Button Style */

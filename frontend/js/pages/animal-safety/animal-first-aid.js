@@ -29,6 +29,7 @@ themeToggle.addEventListener('click', () => {
     } else {
         enableDarkMode();
     }
+
     
     // Add click animation
     themeToggle.style.transform = 'scale(0.95)';
@@ -40,6 +41,32 @@ themeToggle.addEventListener('click', () => {
 // Original First Aid Grid Code
 const firstAidData = {
     bird: [
+        { icon: '🪶', title: 'Wing Injury', desc: 'Keep the bird calm, gently immobilize the wing, and consult a vet.' },
+        { icon: '🍃', title: 'Hypothermia', desc: 'Provide warmth using a soft cloth or heating pad at low temperature.' },
+        { icon: '💧', title: 'Dehydration', desc: 'Offer water using a shallow dish or syringe carefully.' },
+        { icon: '🌡️', title: 'Shock', desc: 'Keep in a quiet, dark place and minimize handling.' },
+        { icon: '🍽️', title: 'Malnutrition', desc: 'Provide species-appropriate food and consult a wildlife rehabilitator.' }
+    ],
+    mammal: [
+        { icon: '🐾', title: 'Fractures', desc: 'Immobilize the injured limb and keep the animal calm until professional help arrives.' },
+        { icon: '🩹', title: 'Cuts & Wounds', desc: 'Clean gently, apply antiseptic, and monitor for infection.' },
+        { icon: '💊', title: 'Poisoning', desc: 'Do not induce vomiting. Contact a wildlife vet immediately.' },
+        { icon: '🤢', title: 'Digestive Issues', desc: 'Withhold food for 12-24 hours, provide water, and monitor.' },
+        { icon: '👁️', title: 'Eye Problems', desc: 'Flush with saline solution and avoid direct sunlight.' }
+    ],
+    reptile: [
+        { icon: '🦎', title: 'Burns', desc: 'Cool the burn with lukewarm water and avoid applying creams meant for humans.' },
+        { icon: '🌡️', title: 'Temperature Shock', desc: 'Move to a suitable temperature environment and hydrate carefully.' },
+        { icon: '🩺', title: 'Infections', desc: 'Clean wounds gently and monitor. Seek vet assistance.' },
+        { icon: '💧', title: 'Dehydration', desc: 'Provide shallow water bowl and mist habitat regularly.' },
+        { icon: '🥚', title: 'Egg Binding', desc: 'Provide warm bath and consult a reptile specialist immediately.' }
+    ],
+    amphibian: [
+        { icon: '🐸', title: 'Skin Damage', desc: 'Keep skin moist and avoid handling unnecessarily.' },
+        { icon: '💧', title: 'Dehydration', desc: 'Provide shallow water and mist environment to maintain humidity.' },
+        { icon: '🍂', title: 'Contamination', desc: 'Remove from polluted areas and clean habitat gently.' },
+        { icon: '🌡️', title: 'Temperature Stress', desc: 'Maintain optimal temperature range for the specific species.' },
+        { icon: '🦠', title: 'Fungal Infections', desc: 'Isolate and provide clean, filtered water. Consult a vet.' }
         {icon:'🪶', title:'Wing Injury', desc:'Keep the bird calm, gently immobilize the wing, and consult a vet.'},
         {icon:'🍃', title:'Hypothermia', desc:'Provide warmth using a soft cloth or heating pad at low temperature.'},
         {icon:'💧', title:'Dehydration', desc:'Offer water using a shallow dish or syringe carefully.'},
@@ -72,6 +99,13 @@ const firstAidData = {
 const firstAidGrid = document.getElementById('firstAidGrid');
 const buttons = document.querySelectorAll('.animal-type-btn');
 
+function populateFirstAid(type) {
+    firstAidGrid.innerHTML = '';
+    firstAidData[type].forEach(aid => {
+        const card = document.createElement('div');
+        card.className = 'aid-card';
+        card.setAttribute('data-aos', 'fade-up');
+        card.innerHTML = `
 function populateFirstAid(type){
     firstAidGrid.innerHTML='';
     firstAidData[type].forEach(aid=>{
@@ -85,6 +119,7 @@ function populateFirstAid(type){
         `;
         firstAidGrid.appendChild(card);
     });
+
     
     // Animate cards sequentially
     const cards = firstAidGrid.querySelectorAll('.aid-card');
@@ -92,6 +127,12 @@ function populateFirstAid(type){
         card.style.animationDelay = `${index * 0.1}s`;
     });
 }
+
+buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        populateFirstAid(btn.dataset.type);
 
 buttons.forEach(btn=>{
     btn.addEventListener('click',()=>{
@@ -131,11 +172,13 @@ function assessSymptoms() {
     document.querySelectorAll('.symptom-item input:checked').forEach(input => {
         selectedSymptoms.push(input.value);
     });
+
     
     if (selectedSymptoms.length === 0) {
         alert('Please select at least one symptom');
         return;
     }
+
     
     // Determine emergency level
     let highestLevel = 'monitor';
@@ -146,6 +189,7 @@ function assessSymptoms() {
             else if (level === 'urgent' && highestLevel !== 'critical') highestLevel = 'urgent';
         }
     });
+
     
     // Show emergency level
     const emergencyLevel = document.getElementById('emergencyLevel');
@@ -153,6 +197,10 @@ function assessSymptoms() {
     const levelTitle = document.getElementById('levelTitle');
     const levelDescription = document.getElementById('levelDescription');
     const levelInstructions = document.getElementById('levelInstructions');
+
+    emergencyLevel.className = `emergency-level show ${highestLevel}`;
+
+    switch (highestLevel) {
     
     emergencyLevel.className = `emergency-level show ${highestLevel}`;
     
@@ -179,11 +227,13 @@ function assessSymptoms() {
             levelInstructions.textContent = 'Monitor closely and seek veterinary advice if condition worsens';
             break;
     }
+
     
     // Show action steps
     const actionSteps = document.getElementById('actionSteps');
     const stepsContainer = document.getElementById('stepsContainer');
     stepsContainer.innerHTML = '';
+
     
     // Combine steps from all selected symptoms
     const allSteps = [];
@@ -193,6 +243,13 @@ function assessSymptoms() {
                 allSteps.push({
                     symptom: symptom,
                     step: step,
+                    priority: symptomData[symptom].level === 'critical' ? 1 :
+                        symptomData[symptom].level === 'urgent' ? 2 : 3
+                });
+            });
+        }
+    });
+
                     priority: symptomData[symptom].level === 'critical' ? 1 : 
                              symptomData[symptom].level === 'urgent' ? 2 : 3
                 });
@@ -211,6 +268,13 @@ function assessSymptoms() {
         `;
         stepsContainer.appendChild(stepDiv);
     });
+
+    actionSteps.classList.add('show');
+
+    // Show vet guidance if critical or urgent
+    const vetGuidance = document.getElementById('vetGuidance');
+    const vetInstructions = document.getElementById('vetInstructions');
+
     
     actionSteps.classList.add('show');
     
@@ -228,6 +292,7 @@ function assessSymptoms() {
     } else {
         vetGuidance.classList.remove('show');
     }
+
     
     // Scroll to results
     emergencyLevel.scrollIntoView({ behavior: 'smooth' });
@@ -238,6 +303,7 @@ function resetAssessment() {
         input.checked = false;
         input.parentElement.classList.remove('selected');
     });
+
     
     document.getElementById('emergencyLevel').classList.remove('show');
     document.getElementById('actionSteps').classList.remove('show');
@@ -254,6 +320,7 @@ function prepareForVetVisit() {
 
 // Add click handlers to symptom items
 document.querySelectorAll('.symptom-item').forEach(item => {
+    item.addEventListener('click', function (e) {
     item.addEventListener('click', function(e) {
         if (e.target.type !== 'checkbox') {
             const checkbox = this.querySelector('input');

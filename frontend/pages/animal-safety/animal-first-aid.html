@@ -1,26 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EcoLife | Animal First Aid</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="/envirnoment-logo.png">
     <link rel="stylesheet" href="../../css/pages/animal-safety/animal-first-aid.css">
 
+    <link rel="stylesheet" href="../../css/components/footer.css" />
+    <link rel="stylesheet" href="../../css/components/navbar.css" />
   <link rel="stylesheet" href="../../css/components/footer.css" />
   <link rel="stylesheet" href="../../css/components/navbar.css" />
   <link rel="stylesheet" href="../../css/global/utilities.css" />
 </head>
+
 <body>
 
-<div id="cursor-container"></div>
-<script src="../../js/components/loadComponents.js"></script>
+    <div id="cursor-container"></div>
+    <script src="../../js/components/loadComponents.js"></script>
 
-  <div id="navbar-container"></div>
-  
+    <div id="navbar-container"></div>
+
 
     <!-- Theme Toggle -->
     <div class="theme-toggle">
@@ -52,7 +57,7 @@
                     <h3>🩺 Emergency Symptom Assessment</h3>
                     <p>Select all symptoms you observe to get immediate guidance</p>
                 </div>
-                
+
                 <div class="symptom-checklist" id="symptomChecklist">
                     <div class="symptom-item">
                         <input type="checkbox" id="breathing" value="breathing">
@@ -103,7 +108,7 @@
                         <label for="paralyzed">🚫 Paralysis/Can't Move</label>
                     </div>
                 </div>
-                
+
                 <!-- Emergency Level Indicator -->
                 <div class="emergency-level" id="emergencyLevel">
                     <div class="level-header">
@@ -115,13 +120,13 @@
                     </div>
                     <p id="levelInstructions">Follow the priority actions below immediately.</p>
                 </div>
-                
+
                 <!-- Action Steps -->
                 <div class="action-steps" id="actionSteps">
                     <h4>📋 Priority Actions</h4>
                     <div id="stepsContainer"></div>
                 </div>
-                
+
                 <!-- Vet Guidance -->
                 <div class="vet-guidance" id="vetGuidance">
                     <h4><i class="fas fa-phone-alt"></i> When to Call a Vet Immediately</h4>
@@ -135,7 +140,7 @@
                         </button>
                     </div>
                 </div>
-                
+
                 <!-- Assessment Buttons -->
                 <div class="assessment-buttons">
                     <button class="assessment-btn primary" onclick="assessSymptoms()">
@@ -147,17 +152,24 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Footer Note -->
         <div class="footer-note" data-aos="fade-up">
-            <p>⚠️ Important: This tool provides general first aid guidance only. Always consult with a qualified veterinarian for professional medical advice.</p>
-            <p style="margin-top: 0.5rem; font-size: 0.8rem;">© 2024 EcoLife Animal First Aid | Dark Mode: <span id="themeStatus">Off</span></p>
+            <p>⚠️ Important: This tool provides general first aid guidance only. Always consult with a qualified
+                veterinarian for professional medical advice.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem;">© 2024 EcoLife Animal First Aid | Dark Mode: <span
+                    id="themeStatus">Off</span></p>
         </div>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="../../js/pages/animal-safety/animal-first-aid.js"></script>
     <script>
+        (function () { if (!window.chatbase || window.chatbase("getState") !== "initialized") { window.chatbase = (...arguments) => { if (!window.chatbase.q) { window.chatbase.q = [] } window.chatbase.q.push(arguments) }; window.chatbase = new Proxy(window.chatbase, { get(target, prop) { if (prop === "q") { return target.q } return (...args) => target(prop, ...args) } }) } const onLoad = function () { const script = document.createElement("script"); script.src = "https://www.chatbase.co/embed.min.js"; script.id = "ws110ZzXAkEnbVsIy9g8d"; script.domain = "www.chatbase.co"; document.body.appendChild(script) }; if (document.readyState === "complete") { onLoad() } else { window.addEventListener("load", onLoad) } })();
+    </script>
+    <!-- Footer placeholder -->
+    <div id="footer-placeholder"></div>
+    <script src="/frontend/js/components/footer-loader.js"></script>
         AOS.init();
         
         // Theme Toggle Functionality - SIMPLIFIED VERSION
@@ -646,4 +658,5 @@
 
     <script src="../../js/components/navbar-loader.js"></script>
 </body>
+
 </html>

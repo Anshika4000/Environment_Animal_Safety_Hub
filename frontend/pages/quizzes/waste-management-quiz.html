@@ -110,6 +110,18 @@
   <!-- QUIZ -->
   <div id="quizScreen">
     <div class="timer">⏳ Time Left: <span id="time">03:00</span></div>
+    <div class="progress-bar-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-metrics">
+        <span id="timeSpent">Time Spent: 0s</span> | <span id="questionsCompleted">Completed: 0/10</span>
+      </div>
+    </div>
+    <div class="pause-resume-buttons">
+      <button class="btn-secondary" id="pauseBtn" onclick="pauseQuiz()">⏸️ Pause</button>
+      <button class="btn-secondary" id="resumeBtn" onclick="resumeQuiz()" style="display:none;">▶️ Resume</button>
+    </div>
     <div class="question" id="question"></div>
     <div id="options"></div>
     <button onclick="nextQuestion()">Next</button>

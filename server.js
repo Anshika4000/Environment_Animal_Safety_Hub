@@ -23,7 +23,6 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // API Routes with validation
 const { validate } = require('./backend/middleware/validation');
-const { rateLimits } = require('./backend/middleware/security');
 
 app.use('/api/quiz', require('./backend/routes/quiz'));
 app.use('/api/animals', require('./backend/routes/animals'));
@@ -75,7 +74,7 @@ app.get('/', (req, res) => {
 // Error handling middleware
 app.use(require('./backend/middleware/errorHandler'));
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
     console.log(`📁 Category Management: http://localhost:${PORT}/category-management`);

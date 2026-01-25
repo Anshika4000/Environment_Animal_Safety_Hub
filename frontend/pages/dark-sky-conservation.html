@@ -101,6 +101,27 @@
       </div>
     </div>
 
+    <!-- Quiz Section -->
+    <div class="content-section">
+      <h2><i class="fas fa-brain"></i> Test Your Knowledge</h2>
+      <p>Take this quick quiz to learn more about dark sky conservation and nocturnal wildlife!</p>
+      <div id="quiz-container">
+        <div id="quiz-start">
+          <button class="quiz-btn" onclick="startQuiz()">Start Quiz</button>
+        </div>
+        <div id="quiz-questions" style="display: none;">
+          <div id="question-container"></div>
+          <div id="options-container"></div>
+          <button class="quiz-btn" id="next-btn" onclick="nextQuestion()" style="display: none;">Next</button>
+        </div>
+        <div id="quiz-results" style="display: none;">
+          <h3>Quiz Complete!</h3>
+          <p id="score-display"></p>
+          <button class="quiz-btn" onclick="restartQuiz()">Take Again</button>
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <div id="footer-container"></div>

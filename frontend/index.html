@@ -69,6 +69,7 @@
   <link rel="stylesheet" href="css/components/sections.css" />
   <link rel="stylesheet" href="css/components/scrollBar.css" />
   <link rel="stylesheet" href="css/components/modal.css" />
+  <link rel="stylesheet" href="css/components/crisis-alert.css" />
   <link rel="stylesheet" href="css/components/eco-assistant.css" />
   <link rel="stylesheet" href="css/components/responsive-images.css" />
   <link rel="stylesheet" href="css/components/image-loading.css" />
@@ -257,9 +258,31 @@
 
 
 
-<body>
+<body class="crisis-alert-shown">
 
   <div id="cursor-container"></div>
+
+  <!-- Level 3 Crisis Alert Banner -->
+  <div class="crisis-alert-banner" id="crisisAlert">
+    <div class="crisis-alert-content">
+      <div class="crisis-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <div class="crisis-text">
+        <span class="crisis-level">🔥 LEVEL 3 CRISIS</span>
+        <span class="crisis-title">Fire Regime Shifts Causing Mass Wildlife Adaptation Failure</span>
+        <span class="crisis-action">400% increase in fire frequency - Immediate conservation action required</span>
+      </div>
+      <div class="crisis-actions">
+        <a href="pages/fire-regime-shifts.html" class="crisis-btn">
+          <i class="fas fa-fire"></i> View Crisis Details
+        </a>
+        <button class="crisis-close" onclick="closeCrisisAlert()" aria-label="Close crisis alert">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Skip Navigation Link for Keyboard Users -->
   <a href="#main-content" class="skip-link" id="skip-to-main">Skip to main content</a>
@@ -566,15 +589,15 @@
             <div class="service-icon-3d">
               <img src="assets/images/3d/building_green_energy.png" alt="Climate Action">
             </div>
-            <h3>Climate Action</h3>
+            <h3>Climate Action <span style="color: #ff0000; font-size: 0.8rem; font-weight: 900; text-shadow: 0 0 10px #ff0000;" class="crisis-urgent-text">[LEVEL 3 CRISIS]</span></h3>
             <p>
               Raising awareness about climate change and promoting sustainable
-              lifestyle choices.
+              lifestyle choices. <strong style="color: #ff4500; background: rgba(255,69,0,0.1); padding: 2px 6px; border-radius: 4px;">URGENT: Fire regime shifts causing wildlife adaptation failure.</strong>
             </p>
           </div>
           <div class="service-card-back">
-            <a href="javascript:void(0)" class="service-link open-modal-btn" data-id="climate-action">
-              Learn More <i class="fa-solid fa-arrow-right"></i>
+            <a href="pages/fire-regime-shifts.html" class="service-link" style="background: linear-gradient(45deg, #ff4500, #ff0000); color: white; font-weight: bold; text-shadow: 0 0 10px rgba(0,0,0,0.5);" title="View Level 3 Crisis Details">
+              🔥 Crisis Level 3 <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
         </div>

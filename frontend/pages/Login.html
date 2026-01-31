@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login | EcoLife</title>
   <link rel="stylesheet" href="../css/style.css" />
-  <link rel="stylesheet" href="../css/components/footer.css" />
-  <link rel="stylesheet" href="../css/pages/auth.css" /><link rel="stylesheet" href="../../css/global/utilities.css" />
+  <link rel="stylesheet" href="../css/components/Login_SignUp.css" />
+  <link rel="stylesheet" href="../css/global/utilities.css" />
   <link rel="icon" type="image/png" href="/envirnoment-logo.png">
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -60,6 +60,40 @@
                 <i class="fa-solid fa-eye" id="password-icon"></i>
               </button>
             </div>
+
+            <div class="form-group">
+              <label for="password">
+                <i class="fa-solid fa-lock"></i> Password
+              </label>
+              <div class="password-input-wrapper">
+                <input type="password" id="password" name="password" placeholder="Enter your password" required />
+                <button type="button" class="toggle-password" onclick="togglePassword('password')"
+                  aria-label="Toggle password visibility">
+                  <i class="fa-solid fa-eye" id="password-icon"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-options">
+              <label class="remember-me">
+                <input type="checkbox" name="remember" />
+                <span class="checkmark"></span>
+                Remember me
+              </label>
+              <a href="forgot-password.html" class="forgot-password">Forgot Password?</a>
+            </div>
+
+            <div class="form-disclaimer">
+              <p><i class="fa-solid fa-info-circle"></i> Data stored locally only</p>
+            </div>
+
+            <button type="submit" class="auth-btn">
+              <i class="fa-solid fa-right-to-bracket"></i> Login
+            </button>
+          </form>
+
+          <div class="auth-divider">
+            <span>OR</span>
           </div>
 
           <div class="form-options">
@@ -102,7 +136,7 @@
   </script>
   <!-- Footer placeholder -->
   <div id="footer-placeholder"></div>
-<script src="../js/components/component-loader.js"></script>
+  <script src="../js/components/component-loader.js"></script>
   <script src="../js/components/component-loader.js"></script>
 </body>
 

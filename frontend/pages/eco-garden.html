@@ -6,8 +6,10 @@
   <title>Virtual Eco Garden Simulator</title>
   <link rel="stylesheet" href="../css/eco-garden.css">
     <link rel="stylesheet" href="../css/eco-habit-tracker.css">
+    <link rel="stylesheet" href="../css/wildlife-game.css">
   <script defer src="../js/eco-garden.js"></script>
     <script defer src="../js/eco-habit-tracker.js"></script>
+      <script defer src="../js/wildlife-game.js"></script>
     <!-- html2canvas for achievement card sharing -->
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
@@ -146,6 +148,28 @@
       <span style="font-weight:600;">Achievement Card</span>
       <div id="achievementCard"></div>
       <button class="share-btn" id="shareAchievementBtn" style="margin-top:0.7rem;">Share Achievement</button>
+    </div>
+  </div>
+
+  <!-- Wildlife Rescue Adventure Game UI -->
+  <div class="wildlife-game-container" id="wildlifeGame">
+    <div class="wildlife-title">Wildlife Rescue Adventure 🦉</div>
+    <!-- Virtual Map -->
+    <div class="wildlife-map" id="wildlifeMap">
+      <!-- Map areas will be rendered here -->
+    </div>
+    <!-- Mission Panel -->
+    <div class="mission-panel" id="missionPanel">
+      <span style="font-weight:600;">Eco-Missions</span>
+      <div id="missionList"></div>
+      <div id="missionDetails"></div>
+    </div>
+    <!-- Animated Scene -->
+    <div id="animatedScene" style="width:100%;min-height:60px;"></div>
+    <!-- Rescued Animals Gallery -->
+    <div class="rescued-gallery" id="rescuedGallery">
+      <span style="font-weight:600;">Rescued Animals Gallery</span>
+      <div id="rescuedAnimals"></div>
     </div>
   </div>
 </body>

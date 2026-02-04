@@ -19,7 +19,6 @@
   <meta content="#0d1b0f" name="msapplication-TileColor"/>
   <meta content="assets/icons/icon-144x144.png" name="msapplication-TileImage"/>
   <!-- PWA Manifest -->
-  <link href="manifest.json" rel="manifest"/>
   <!-- Apple Touch Icons -->
   <link href="assets/icons/icon-192x192.png" rel="apple-touch-icon"/>
   <link href="assets/icons/icon-152x152.png" rel="apple-touch-icon" sizes="152x152"/>
@@ -90,100 +89,92 @@
  <!-- <button id="scrollBottomBtn" title="Scroll to Bottom">
   ⬇️ -->
  <!-- </button> -->
- <body class="crisis-alert-shown">
-  <!-- Noise Pollution Crisis Alert Banner - Level 3 Emergency -->
+
+<body class="crisis-alert-shown">
+
+  <!-- ================= NAVBAR (ALWAYS FIRST) ================= -->
+  <div id="navbar-container"></div>
+
+  <!-- ================= CRISIS / ALERT BANNERS (BELOW NAVBAR) ================= -->
+
+  <!-- Noise Pollution Crisis Alert -->
   <div class="noise-crisis-alert-banner" id="noise-crisis-alert-banner" style="display: none;">
-   <div class="noise-crisis-alert-content">
-    <div class="noise-crisis-icon">
-     <i class="fas fa-volume-up noise-pulse">
-     </i>
+    <div class="noise-crisis-alert-content">
+      <div class="noise-crisis-icon">
+        <i class="fas fa-volume-up noise-pulse"></i>
+      </div>
+      <div class="noise-crisis-text">
+        <div class="noise-crisis-level">LEVEL 3 EMERGENCY</div>
+        <div class="noise-crisis-title">Shipping Noise Pollution Crisis</div>
+        <div class="noise-crisis-action">
+          Marine mammals face critical communication disruption
+        </div>
+      </div>
+      <div class="noise-crisis-actions">
+        <a class="noise-crisis-btn" href="./pages/noise-pollution-shipping.html">
+          <span class="noise-emergency-dot"></span>
+          View Crisis Details
+          <i class="fas fa-arrow-right"></i>
+        </a>
+        <button class="noise-crisis-close" aria-label="Close crisis alert"
+          onclick="closeNoiseCrisisAlert()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
     </div>
-    <div class="noise-crisis-text">
-     <div class="noise-crisis-level">
-      LEVEL 3 EMERGENCY
-     </div>
-     <div class="noise-crisis-title">
-      Shipping Noise Pollution Crisis
-     </div>
-     <div class="noise-crisis-action">
-      Marine mammals face critical communication disruption
-     </div>
-    </div>
-    <div class="noise-crisis-actions">
-     <a class="noise-crisis-btn" href="./pages/noise-pollution-shipping.html">
-      <span class="noise-emergency-dot">
-      </span>
-      View Crisis Details
-      <i class="fas fa-arrow-right">
-      </i>
-     </a>
-     <button aria-label="Close crisis alert" class="noise-crisis-close" onclick="closeNoiseCrisisAlert()">
-      <i class="fas fa-times">
-      </i>
-     </button>
-    </div>
-   </div>
   </div>
-  <!-- Indigenous Knowledge Loss Crisis Alert Banner - Level 3 Emergency -->
+
+  <!-- Indigenous Knowledge Loss Crisis Alert -->
   <div class="indigenous-crisis-alert-banner" id="indigenous-crisis-alert-banner" style="display: none;">
-   <div class="indigenous-crisis-alert-content">
-    <div class="indigenous-crisis-icon">
-     <i class="fas fa-brain">
-     </i>
+    <div class="indigenous-crisis-alert-content">
+      <div class="indigenous-crisis-icon">
+        <i class="fas fa-brain"></i>
+      </div>
+      <div class="indigenous-crisis-text">
+        <div class="indigenous-crisis-title">LEVEL 3 EMERGENCY</div>
+        <div class="indigenous-crisis-message">
+          Indigenous Ecological Knowledge Loss Crisis
+        </div>
+      </div>
+      <div class="indigenous-crisis-actions">
+        <a class="indigenous-crisis-btn" href="./pages/indigenous-knowledge-loss.html">
+          <i class="fas fa-eye"></i>
+          View Crisis Details
+        </a>
+        <button class="indigenous-crisis-dismiss" aria-label="Close crisis alert"
+          onclick="closeIndigenousCrisisAlert()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
     </div>
-    <div class="indigenous-crisis-text">
-     <div class="indigenous-crisis-title">
-      LEVEL 3 EMERGENCY
-     </div>
-     <div class="indigenous-crisis-message">
-      Indigenous Ecological Knowledge Loss Crisis
-     </div>
-    </div>
-    <div class="indigenous-crisis-actions">
-     <a class="indigenous-crisis-btn" href="./pages/indigenous-knowledge-loss.html">
-      <i class="fas fa-eye">
-      </i>
-      View Crisis Details
-     </a>
-     <button aria-label="Close crisis alert" class="indigenous-crisis-dismiss" onclick="closeIndigenousCrisisAlert()">
-      <i class="fas fa-times">
-      </i>
-     </button>
-    </div>
-   </div>
   </div>
-  <div id="cursor-container">
-  </div>
-  <!-- Level 3 Crisis Alert Banner -->
+
+  <!-- Fire Regime Crisis Alert -->
   <div class="crisis-alert-banner" id="crisisAlert">
-   <div class="crisis-alert-content">
-    <div class="crisis-icon">
-     <i class="fas fa-exclamation-triangle">
-     </i>
+    <div class="crisis-alert-content">
+      <div class="crisis-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <div class="crisis-text">
+        <span class="crisis-level">🔥 LEVEL 3 CRISIS</span>
+        <span class="crisis-title">
+          Fire Regime Shifts Causing Mass Wildlife Adaptation Failure
+        </span>
+        <span class="crisis-action">
+          400% increase in fire frequency – Immediate conservation action required
+        </span>
+      </div>
+      <div class="crisis-actions">
+        <a class="crisis-btn" href="pages/fire-regime-shifts.html">
+          <i class="fas fa-fire"></i>
+          View Crisis Details
+        </a>
+        <button class="crisis-close" aria-label="Close crisis alert"
+          onclick="closeCrisisAlert()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
     </div>
-    <div class="crisis-text">
-     <span class="crisis-level">
-      🔥 LEVEL 3 CRISIS
-     </span>
-     <span class="crisis-title">
-      Fire Regime Shifts Causing Mass Wildlife Adaptation Failure
-     </span>
-     <span class="crisis-action">
-      400% increase in fire frequency - Immediate conservation action required
-     </span>
-    </div>
-    <div class="crisis-actions">
-     <a class="crisis-btn" href="pages/fire-regime-shifts.html">
-      <i class="fas fa-fire">
-      </i>
-      View Crisis Details
-     </a>
-     <button aria-label="Close crisis alert" class="crisis-close" onclick="closeCrisisAlert()">
-      <i class="fas fa-times">
-      </i>
-     </button>
-    </div>
-   </div>
   </div>
   <!-- Skip Navigation Link for Keyboard Users -->
   <a class="skip-link" href="#main-content" id="skip-to-main">
@@ -216,9 +207,6 @@
   <div aria-hidden="true" class="sun-glow">
   </div>
   <div aria-label="Page scroll progress" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="scroll-progress" id="scrollProgress" role="progressbar">
-  </div>
-  <!-- Navbar -->
-  <div id="navbar-container">
   </div>
   <!-- 🌗 Dark / Light Mode Toggle -->
   <button aria-label="Toggle dark and light mode" aria-pressed="false" class="theme-toggle" id="themeToggle" title="Toggle Dark / Light Mode">
@@ -1123,9 +1111,10 @@
         <p>
          Collect and reuse rainwater to reduce groundwater depletion.
         </p>
+        <ul>
         <li>
          We can store water into storage tank, or directing it to recharge groundwater through pits or wells.
-        </li>
+        </li></ul>
         <div class="card-footer">
          <div class="card-stats">
           <i class="fa-solid fa-apple-whole">
@@ -1152,6 +1141,7 @@
          Key sustainability principles for minimizing waste, promoting resource conservation, and lessening
                 environmental impact.
         </p>
+        <ul>
         <li>
          Limit disposable items.
         </li>
@@ -1160,7 +1150,7 @@
         </li>
         <li>
          Sort waste for recycling (paper, plastic, metal, e-waste).
-        </li>
+        </li></ul>
         <div class="card-footer">
          <div class="card-stats">
           <i class="fa-solid fa-apple-whole">
@@ -1187,6 +1177,7 @@
          Farming approach that meets present food needs without compromising future generations' ability to meet
                 theirs.
         </p>
+        <ul>
         <li>
          Organic farming
         </li>
@@ -1195,7 +1186,7 @@
         </li>
         <li>
          Composting for soil quality improvement.
-        </li>
+        </li></ul>
         <div class="card-footer">
          <div class="card-stats">
           <i class="fa-solid fa-apple-whole">
@@ -2349,8 +2340,15 @@
   </script>
   <script src="js/global/optimized-image-loader.js">
   </script>
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js">
-  </script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    once: true,
+    duration: 800,
+    easing: "ease-out-cubic"
+  });
+</script>
+
   <!-- MAIN APP -->
   <script src="js/main.js">
   </script>
@@ -2364,8 +2362,7 @@
   <script src="js/pages/home.js">
   </script>
   <!-- 🌗 THEME TOGGLE (LOAD LAST) -->
-  <script src="./theme-toggle.js">
-  </script>
+  <script src="js/global/theme-toggle.js"></script>
   <!-- Chatbase Script -->
   <script>
    (function () { if (!window.chatbase || window.chatbase("getState") !== "initialized") { window.chatbase = (...arguments) => { if (!window.chatbase.q) { window.chatbase.q = [] } window.chatbase.q.push(arguments) }; window.chatbase = new Proxy(window.chatbase, { get(target, prop) { if (prop === "q") { return target.q } return (...args) => target(prop, ...args) } }) } const onLoad = function () { const script = document.createElement("script"); script.src = "https://www.chatbase.co/embed.min.js"; script.id = "ws110ZzXAkEnbVsIy9g8d"; script.domain = "www.chatbase.co"; document.body.appendChild(script) }; if (document.readyState === "complete") { onLoad() } else { window.addEventListener("load", onLoad) } })();
@@ -2666,89 +2663,13 @@
     }
   </script>
   <!-- Global JavaScript for Live Clock -->
-  <script src="js/global/main.js">
-  </script>
   <!-- Home Page Parallax Script -->
-  <script src="js/pages/home.js">
-  </script>
-  <script src="js/components/eco-assistant.js">
-  </script>
+  <script src="js/components/eco-assistant.js"></script>
   <!-- PWA Script -->
-  <script src="js/pwa.js">
-  </script>
+  <script src="js/pwa.js"></script>
   <script>
-   // Set initial theme based on localStorage or preference
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-
-    // Theme toggle function
-    function toggleTheme() {
-      const currentTheme = document.documentElement.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', newTheme);
-      localStorage.setItem('theme', newTheme);
-    }
-  </script>
-  <script>
-   // Theme toggle functionality
-    document.addEventListener('DOMContentLoaded', function () {
-      const themeToggle = document.getElementById('themeToggle');
-      const themeIcon = themeToggle.querySelector('i');
-      const themeText = themeToggle.querySelector('.sr-only');
-
-      // Set initial theme
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      document.documentElement.setAttribute('data-theme', savedTheme);
-      updateThemeIcon(savedTheme);
-
-      // Toggle theme on button click
-      themeToggle.addEventListener('click', function () {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateThemeIcon(newTheme);
-
-        // Force a reflow to ensure CSS updates
-        document.body.offsetHeight;
-      });
-
-      function updateThemeIcon(theme) {
-        if (theme === 'dark') {
-          themeIcon.className = 'fa-solid fa-sun';
-          themeText.textContent = 'Current theme: Dark mode';
-        } else {
-          themeIcon.className = 'fa-solid fa-moon';
-          themeText.textContent = 'Current theme: Light mode';
-        }
-      }
-
-      // Apply text color fixes immediately
-      applyTextColorFixes();
-
-      function applyTextColorFixes() {
-        // This function ensures text colors are correct
-        const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
-
-        if (!isDarkTheme) {
-          // Force dark text on all hero elements in light mode
-          const heroElements = document.querySelectorAll('.hero-content p, .hero-content span, .hero-content div');
-          heroElements.forEach(el => {
-            if (!el.classList.contains('btn') && !el.closest('.btn')) {
-              el.style.color = '#222222';
-            }
-          });
-
-          // Specifically fix the hero features text
-          const heroFeatures = document.querySelectorAll('.hero-feature span');
-          heroFeatures.forEach(span => {
-            span.style.color = '#1b5e20';
-            span.style.fontWeight = '600';
-          });
-        }
-      }
-    });
-  </script>
+  const scrollManager = new ScrollManager();
+  scrollManager.init();
+</script>
  </body>
 </html>

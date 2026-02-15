@@ -34,6 +34,12 @@
   font-family: 'Poppins', sans-serif;
 }
 
+/* Lock body scroll when mobile nav is open */
+body.nav-open {
+  overflow: hidden;
+  height: 100vh;
+}
+
 /* ===== NAVBAR BASE ===== */
 .navbar {
   position: fixed;
@@ -58,9 +64,12 @@
 }
 
 .nav-container {
-  width: 95%;                /* slightly tighter container */
-  max-width: 1400px;         /* prevents edge clipping at 100% zoom */
-  padding: 0 16px;           /* reduce side padding */
+  width: 95%;
+  /* slightly tighter container */
+  max-width: 1400px;
+  /* prevents edge clipping at 100% zoom */
+  padding: 0 16px;
+  /* reduce side padding */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -116,7 +125,8 @@
   transition: var(--transition-normal);
   margin-bottom: 20px;
   flex-shrink: 0;
-  width: fit-content;            /* ⬅️ content jitni width */
+  width: fit-content;
+  /* ⬅️ content jitni width */
   max-width: fit-content;
 }
 
@@ -213,7 +223,8 @@
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 16px;                /* tighter but still readable */
+  gap: 16px;
+  /* tighter but still readable */
   list-style: none;
   margin: 0;
   padding: 0;
@@ -242,8 +253,10 @@
   transition: transform 0.3s ease;
 }
 
-.nav-group:hover .nav-link i {
-  transform: rotate(180deg);
+@media (min-width: 1201px) {
+  .nav-group:hover .nav-link i {
+    transform: rotate(180deg);
+  }
 }
 
 /* Premium Underline Animation */
@@ -276,6 +289,7 @@
 .font-size-increase {
   margin-left: 15px;
 }
+
 /* ===== DROPDOWNS ===== */
 .nav-group {
   position: relative;
@@ -305,11 +319,14 @@
 }
 
 /* Hover State */
-.nav-group:hover .dropdown {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(10px);
+@media (min-width: 1201px) {
+  .nav-group:hover .dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(10px);
+  }
 }
+
 
 /* Dropdown Links */
 .dropdown li {
@@ -342,7 +359,8 @@
   margin-left: auto;
   padding-left: 16px;
   border-left: 1px solid rgba(255, 255, 255, 0.3);
-  flex-shrink: 1;           /* allow slight shrink instead of clipping */
+  flex-shrink: 1;
+  /* allow slight shrink instead of clipping */
   min-width: fit-content;
 }
 
@@ -369,7 +387,8 @@
 
 /* Sign Up Button */
 .btn-signup {
-  padding: 8px 16px;        /* slightly tighter */
+  padding: 8px 16px;
+  /* slightly tighter */
   background: linear-gradient(135deg, var(--eco-light), var(--eco-primary));
   color: var(--white);
   border-radius: var(--radius-xl);
@@ -379,7 +398,8 @@
   white-space: nowrap;
   text-decoration: none;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  margin-left: 10px;        /* ensures it never clips */
+  margin-left: 10px;
+  /* ensures it never clips */
 }
 
 .btn-signup:hover {
@@ -595,21 +615,22 @@
     display: flex;
   }
 
-  .nav-links {
+    .nav-links {
     position: fixed;
     top: 0;
     right: -100%;
     width: 320px;
-    height: 100vh;
-    /* Solid Green Gradient for Readability on Mobile */
+    height: 100dvh; /* safer on mobile browsers */
     background: linear-gradient(180deg, var(--eco-dark), #0d2e23);
     flex-direction: column;
     align-items: flex-start;
-    padding: 90px 30px;
+    padding: 90px 24px 40px;
     gap: 10px;
-    transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    transition: 0.45s cubic-bezier(0.77, 0, 0.175, 1);
     box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
     overflow-y: auto;
+    overscroll-behavior: contain;
+    z-index: 1000;
   }
 
   .nav-links.active {
@@ -658,9 +679,9 @@
     padding-left: 15px;
     margin-top: 5px;
   }
-
-  /* Simple show on hover for now, JS toggle recommended for tap */
-  .nav-group:hover .dropdown {
+  
+  /* Mobile submenu controlled by JS */
+  .nav-group.open > .dropdown {
     display: block;
   }
 
@@ -684,11 +705,11 @@
   }
 
   .nav-left {
-  display: flex;
-  align-items: center;
-  gap: 35px;
-  flex: 1;            
-}
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    flex: 1;
+  }
 
   .auth-guest-only {
     width: 100%;
@@ -856,6 +877,7 @@
     transform: translateY(0);
   }
 }
+
 /* Kids Quiz Button Highlight */
 .btn-quiz-highlight {
   background: var(--eco-primary) !important;
@@ -884,7 +906,7 @@
   border: 2px solid #38a169;
   padding: 8px 16px;
   border-radius: 20px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
@@ -892,5 +914,5 @@
   background: #38a169 !important;
   color: white !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }

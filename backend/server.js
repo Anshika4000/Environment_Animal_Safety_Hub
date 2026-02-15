@@ -32,6 +32,27 @@ app.use((req, res, next) => {
 // API Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 
+// Local Food System Explorer API
+app.use('/api/food-locations', require('./category-api'));
+
+// Water Conservation Action Tracker API
+app.use('/api/water-initiatives', require('./category-api'));
+
+// Urban Pollinator Pathways Mapper API
+app.use('/api/pollinator-habitats', require('./category-api'));
+
+// Community Compost Network API
+app.use('/api/compost-sites', require('./category-api'));
+
+// Eco-Friendly Transportation Mapper API
+app.use('/api/transportation-options', require('./category-api'));
+
+// Urban Tree Canopy Tracker API
+app.use('/api/tree-sites', require('./category-api'));
+
+// Clean Air Initiative Explorer API
+app.use('/api/air-activities', require('./category-api'));
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.status(200).json({

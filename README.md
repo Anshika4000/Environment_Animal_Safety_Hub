@@ -159,6 +159,33 @@ Environment_Animal_Safety_Hub/
 
 ---
 
+## 📱 Service Worker Clarification
+
+The official and actively registered service worker file for this project is:
+
+`frontend/sw.js`
+
+This file is registered through:
+
+- `frontend/js/global/main.js`
+- Other feature-specific JavaScript files where applicable
+
+The previously existing file:
+
+`frontend/service-worker.js`
+
+was reviewed and removed to eliminate duplication and architectural ambiguity.
+
+All PWA caching, offline support, and background functionality are now centralized within `sw.js`.
+
+This refactor ensures:
+- Clear service worker ownership
+- No caching conflicts
+- Improved frontend maintainability
+- Better onboarding clarity for contributors
+
+--- 
+
 ## 🎨 Design System
 
 We have a comprehensive **Living Style Guide** that documents all UI components.

@@ -735,6 +735,99 @@
             transform: translateY(-3px);
         }
 
+        /* Navbar Container */
+.navbar {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Inner Container */
+.navbar .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo */
+.navbar-brand img {
+    height: 50px;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand img:hover {
+    transform: scale(1.1) rotate(-3deg);
+}
+
+/* Nav Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #e8f5e9;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    padding: 8px 0;
+}
+
+/* Hover underline animation */
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    left: 0;
+    bottom: -4px;
+    background-color: #a5d6a7;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Hover effect */
+.nav-links a:hover {
+    color: #ffffff;
+}
+
+/* Active link */
+.nav-links a.active {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.nav-links a.active::after {
+    width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-links {
+        gap: 15px;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+    }
+}
+
         @media (max-width: 768px) {
             .hero-section h1 {
                 font-size: 2rem;
@@ -780,6 +873,140 @@
                 font-size: 1.3rem;
             }
         }
+
+
+        /* Footer */
+.footer {
+    background: linear-gradient(135deg, #1b5e20, #0d3b12);
+    color: #e8f5e9;
+    padding: 60px 0 20px;
+    margin-top: 60px;
+}
+
+/* Container */
+.footer .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Footer Content Layout */
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+/* Footer Sections */
+.footer-section {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-section h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+}
+
+/* Underline animation */
+.footer-section h3::after {
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 3px;
+    background: #66bb6a;
+    left: 0;
+    bottom: -6px;
+    border-radius: 5px;
+}
+
+/* Paragraph */
+.footer-section p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #c8e6c9;
+}
+
+/* Quick Links */
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 12px;
+}
+
+.footer-section ul li a {
+    text-decoration: none;
+    color: #c8e6c9;
+    transition: all 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #ffffff;
+    padding-left: 6px;
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a {
+    width: 40px;
+    height: 40px;
+    background: #2e7d32;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-links a:hover {
+    background: #66bb6a;
+    transform: translateY(-5px);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #c8e6c9;
+}
+
+.footer-bottom a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.footer-bottom a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+}
+
     </style>
 </head>
 

@@ -27,6 +27,7 @@ class EcoAssistant {
       },
     };
 
+    this.ui = {}; // Initialize UI object
     this.init();
   }
 

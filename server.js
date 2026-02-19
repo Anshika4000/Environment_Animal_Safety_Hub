@@ -9,8 +9,16 @@ const { rateLimits, sanitizeInput, mongoSanitizeMiddleware } = require('./backen
 const app = express();
 
 // Connect to database
-connectDB();
-initializeDatabase();
+const startApp = async () => {
+    try {
+        await connectDB();
+        await initializeDatabase();
+        console.log('✅ Database and Initial Data Ready');
+    } catch (err) {
+        console.error('❌ Startup Failed:', err.message);
+    }
+};
+startApp();
 
 // Middleware to log all requests
 app.use((req, res, next) => {
@@ -20,7 +28,24 @@ app.use((req, res, next) => {
 });
 
 // Security middleware
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://unpkg.com", "https://www.chatbase.co", "https://cdnjs.cloudflare.com"],
+            scriptSrcAttr: ["'unsafe-inline'"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com", "https://unpkg.com"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
+            imgSrc: ["'self'", "data:", "https:", "*"],
+            connectSrc: ["'self'", "https://www.chatbase.co", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com", "https://unpkg.com", "https://*.mongodb.net"],
+            frameSrc: ["'self'", "https://www.chatbase.co"],
+            objectSrc: ["'none'"],
+            upgradeInsecureRequests: [],
+        },
+    },
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
 app.use(rateLimits.general);
 app.use(mongoSanitizeMiddleware);
 app.use(sanitizeInput);

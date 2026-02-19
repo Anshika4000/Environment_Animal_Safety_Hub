@@ -4,7 +4,7 @@
  * @param {ZodSchema} schema - The Zod schema to validate against.
  * @returns {Promise<boolean>} - True if valid, false otherwise.
  */
-export async function validateForm(formElement, schema) {
+async function validateForm(formElement, schema) {
   // 1. Clear previous errors
   clearErrors(formElement);
 
@@ -74,3 +74,7 @@ function clearErrors(form) {
   const errorInputs = form.querySelectorAll('.error-border');
   errorInputs.forEach(el => el.classList.remove('error-border'));
 }
+
+// Expose to global scope
+window.validateForm = validateForm;
+window.clearFormErrors = clearErrors;

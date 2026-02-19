@@ -5,8 +5,10 @@ const path = require('path');
 
 const initializeDatabase = async () => {
     try {
-        await connectDB();
-        
+        // Database connection is now handled by server.js sequentially
+        // await connectDB(); 
+
+
         // Check if data already exists
         const existingQuizzes = await Quiz.countDocuments();
         if (existingQuizzes > 0) {
@@ -18,7 +20,7 @@ const initializeDatabase = async () => {
         const quizDataPath = path.join(__dirname, '../frontend/assets/data/quiz-data.json');
         if (fs.existsSync(quizDataPath)) {
             const quizData = JSON.parse(fs.readFileSync(quizDataPath, 'utf8'));
-            
+
             for (const quiz of quizData.quizzes) {
                 await Quiz.create(quiz);
             }

@@ -12,6 +12,7 @@
 // Initialize all home page features when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
     initHeroParallax();
+    initHeroVideoBackground();
     initDailyQuote();
     initTestimonialFadeIn();
     initStatsCounter();
@@ -70,6 +71,80 @@ function initHeroParallax() {
 
     // Initial call to set position
     updateParallax();
+}
+
+/**
+ * Initializes the hero background video with pause/play controls
+ * Respects user's reduced motion preference and keeps audio muted
+ */
+function initHeroVideoBackground() {
+    const heroSection = document.querySelector('.hero-section');
+    const video = document.getElementById('hero-background-video');
+    const toggleButton = document.querySelector('.hero-video-toggle');
+
+    if (!heroSection || !video || !toggleButton) {
+        return;
+    }
+
+    const toggleLabel = toggleButton.querySelector('.hero-video-toggle-text');
+    const toggleIcon = toggleButton.querySelector('i');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const updateToggleState = (isPlaying) => {
+        toggleButton.setAttribute('aria-pressed', String(isPlaying));
+        toggleButton.setAttribute('aria-label', isPlaying ? 'Pause background video' : 'Play background video');
+        if (toggleLabel) {
+            toggleLabel.textContent = isPlaying ? 'Pause background video' : 'Play background video';
+        }
+        if (toggleIcon) {
+            toggleIcon.className = isPlaying ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+        }
+        heroSection.classList.toggle('video-paused', !isPlaying);
+    };
+
+    const pauseVideo = () => {
+        video.pause();
+        updateToggleState(false);
+    };
+
+    const playVideo = () => {
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.then === 'function') {
+            playPromise.then(() => updateToggleState(true)).catch(() => updateToggleState(false));
+        } else {
+            updateToggleState(!video.paused);
+        }
+    };
+
+    video.muted = true;
+
+    video.addEventListener('canplay', () => {
+        heroSection.classList.add('video-ready');
+    }, { once: true });
+
+    toggleButton.addEventListener('click', () => {
+        if (video.paused) {
+            playVideo();
+        } else {
+            pauseVideo();
+        }
+    });
+
+    const handleMotionPreference = () => {
+        if (prefersReducedMotion.matches) {
+            pauseVideo();
+        } else {
+            playVideo();
+        }
+    };
+
+    if (typeof prefersReducedMotion.addEventListener === 'function') {
+        prefersReducedMotion.addEventListener('change', handleMotionPreference);
+    } else if (typeof prefersReducedMotion.addListener === 'function') {
+        prefersReducedMotion.addListener(handleMotionPreference);
+    }
+
+    handleMotionPreference();
 }
 
 /**

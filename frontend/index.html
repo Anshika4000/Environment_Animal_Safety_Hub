@@ -3114,12 +3114,193 @@ function handleDonationSubmit(e){
       }
     }
   </script>
+  <script>
+class EcoVoiceAssistant {
+  constructor() {
+    this.recognition = null;
+    this.isListening = false;
+    this.synth = window.speechSynthesis;
+    this.micBtn = document.querySelector(".mic-btn");
+    this.init();
+  }
+
+  init() {
+    if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
+      this.speak("Sorry, your browser does not support voice recognition.");
+      return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    this.recognition = new SpeechRecognition();
+    this.recognition.lang = "en-US";
+    this.recognition.continuous = false;
+    this.recognition.interimResults = false;
+
+    this.recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript.toLowerCase();
+      this.handleCommand(transcript);
+    };
+
+    this.recognition.onend = () => {
+      this.isListening = false;
+      this.micBtn.classList.remove("listening");
+    };
+
+    if (this.micBtn) {
+      this.micBtn.addEventListener("click", () => this.toggleListening());
+    }
+  }
+
+  toggleListening() {
+    if (this.isListening) {
+      this.recognition.stop();
+      this.isListening = false;
+      this.micBtn.classList.remove("listening");
+    } else {
+      this.recognition.start();
+      this.isListening = true;
+      this.micBtn.classList.add("listening");
+      this.speak("I am listening.");
+    }
+  }
+
+  speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    this.synth.speak(utterance);
+  }
+
+  handleCommand(command) {
+    console.log("Voice Command:", command);
+
+    // 🔹 Greetings
+    if (command.includes("hello") || command.includes("hi")) {
+      this.speak("Hello! I am your Eco Assistant. How can I help?");
+    }
+
+    // 🔹 Time & Date
+    else if (command.includes("time")) {
+      const time = new Date().toLocaleTimeString();
+      this.speak("The current time is " + time);
+    }
+    else if (command.includes("date")) {
+      const date = new Date().toDateString();
+      this.speak("Today's date is " + date);
+    }
+
+    // 🔹 Scroll Controls
+    else if (command.includes("scroll down")) {
+      window.scrollBy({ top: 500, behavior: "smooth" });
+      this.speak("Scrolling down.");
+    }
+    else if (command.includes("scroll up")) {
+      window.scrollBy({ top: -500, behavior: "smooth" });
+      this.speak("Scrolling up.");
+    }
+    else if (command.includes("go to top")) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      this.speak("Going to top.");
+    }
+    else if (command.includes("go to bottom")) {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      this.speak("Going to bottom.");
+    }
+
+    // 🔹 Environmental Effects
+    else if (command.includes("start rain")) {
+      if (typeof startRain === "function") {
+        startRain(100);
+        this.speak("Starting rain effect.");
+      }
+    }
+    else if (command.includes("start leaves")) {
+      if (typeof startLeaves === "function") {
+        startLeaves(30);
+        this.speak("Leaves effect activated.");
+      }
+    }
+    else if (command.includes("sunlight")) {
+      if (typeof enableSunlight === "function") {
+        enableSunlight();
+        this.speak("Sunlight enabled.");
+      }
+    }
+
+    // 🔹 Battery Status
+    else if (command.includes("battery")) {
+      if (navigator.getBattery) {
+        navigator.getBattery().then(battery => {
+          this.speak("Battery level is " + Math.round(battery.level * 100) + " percent.");
+        });
+      } else {
+        this.speak("Battery information not supported.");
+      }
+    }
+
+    // 🔹 Internet Status
+    else if (command.includes("internet status")) {
+      if (navigator.onLine) {
+        this.speak("You are currently online.");
+      } else {
+        this.speak("You are offline.");
+      }
+    }
+
+    // 🔹 Dictionary Search
+    else if (command.includes("search dictionary")) {
+      const word = command.replace("search dictionary", "").trim();
+      if (word) {
+        const searchInput = document.getElementById("searchInput");
+        if (searchInput) {
+          searchInput.value = word;
+          searchInput.dispatchEvent(new Event("input"));
+          this.speak("Searching dictionary for " + word);
+        }
+      }
+    }
+
+    // 🔹 Quiz Control
+    else if (command.includes("next question")) {
+      const nextBtn = document.getElementById("nextBtn");
+      if (nextBtn) {
+        nextBtn.click();
+        this.speak("Moving to next question.");
+      }
+    }
+
+    // 🔹 Environmental Knowledge
+    else if (command.includes("what is global warming")) {
+      this.speak("Global warming is the long term rise in Earth's average temperature caused by greenhouse gases.");
+    }
+    else if (command.includes("what is biodiversity")) {
+      this.speak("Biodiversity refers to the variety of life on Earth including plants, animals, and microorganisms.");
+    }
+
+    // 🔹 Stop Listening
+    else if (command.includes("stop listening")) {
+      this.recognition.stop();
+      this.speak("Voice assistant stopped.");
+    }
+
+    // 🔹 Default Response
+    else {
+      this.speak("Sorry, I did not understand that command.");
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  new EcoVoiceAssistant();
+});
+</script>
   <!-- Global JavaScript for Live Clock -->
   <!-- Home Page Parallax Script -->
   <script src="js/components/eco-assistant.js"></script>
   <!-- PWA Script -->
   <script src="js/pwa.js">
   </script>
+
 
 </body>
 

@@ -156,6 +156,55 @@ header {
 #add-product-form button:hover {
     background: #388e3c;
 }
+#activity-section {
+    background: #f1f8e9;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(56, 142, 60, 0.1);
+    padding: 2rem;
+    width: 400px;
+    margin: 2rem auto;
+    color: #388e3c;
+}
+#activity-section h2 {
+    margin-top: 0;
+}
+#activity-form {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+#activity-form input, #activity-form select {
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #81c784;
+    font-size: 1rem;
+}
+#activity-form button {
+    background: #43a047;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#activity-form button:hover {
+    background: #388e3c;
+}
+#activity-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#activity-list li {
+    margin-bottom: 0.7rem;
+    background: #fff;
+    border-radius: 8px;
+    padding: 0.7rem;
+    box-shadow: 0 2px 8px rgba(56, 142, 60, 0.05);
+    color: #2e7d32;
+}
 @media (max-width: 700px) {
     #product-list {
         flex-direction: column;
@@ -165,6 +214,9 @@ header {
         width: 90vw;
     }
     .modal-content {
+        width: 90vw;
+    }
+    #activity-section {
         width: 90vw;
     }
 }

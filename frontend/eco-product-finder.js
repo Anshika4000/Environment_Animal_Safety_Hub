@@ -1,5 +1,5 @@
 // Eco-Friendly Product Finder JS
-// Handles product directory, search, reviews, and ratings
+// Handles product directory, search, reviews, ratings, and activity log
 
 const products = [
     {
@@ -110,6 +110,9 @@ const products = [
     }
 ];
 
+// Activity log feature
+const activities = [];
+
 function renderProducts(list) {
     const container = document.getElementById('product-list');
     container.innerHTML = '';
@@ -206,5 +209,31 @@ document.getElementById('product-list').addEventListener('submit', function(e) {
     }
 });
 
+// Activity log feature
+function renderActivities() {
+    const list = document.getElementById('activity-list');
+    list.innerHTML = '';
+    if (activities.length === 0) {
+        list.innerHTML = '<li>No activities logged yet.</li>';
+        return;
+    }
+    activities.forEach((act, idx) => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${act.type}</strong>: ${act.desc} <span style="color:#888;font-size:0.9em;">(${act.date})</span>`;
+        list.appendChild(li);
+    });
+}
+
+document.getElementById('activity-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const desc = document.getElementById('activity-desc').value;
+    const type = document.getElementById('activity-type').value;
+    const date = new Date().toLocaleString();
+    activities.unshift({ desc, type, date });
+    renderActivities();
+    this.reset();
+});
+
 // Initial render
 renderProducts(products);
+renderActivities();

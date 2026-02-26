@@ -11,13 +11,13 @@
     />
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="../../css/global/variables.css" />
-    <link rel="stylesheet" href="../../css/global/utilities.css" />
-    <link rel="stylesheet" href="../../css/style.css" />
-    <link rel="stylesheet" href="../../css/components/navbar.css" />
-    <link rel="stylesheet" href="../../css/components/footer.css" />
-    <link rel="stylesheet" href="../../css/pages/animal-safety/animal-therapy.css" />
-    <link rel="stylesheet" href="../../css/components/scrollBar.css" />
+    <link rel="stylesheet" href="css/global/variables.css" />
+    <link rel="stylesheet" href="css/global/utilities.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/components/navbar.css" />
+    <link rel="stylesheet" href="css/components/footer.css" />
+    <link rel="stylesheet" href="css/pages/animal-safety/animal-therapy.css" />
+    <link rel="stylesheet" href="css/components/scrollBar.css" />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -662,7 +662,10 @@
               The nation's largest and most prestigious nonprofit registering therapy animals. 
               Provides comprehensive training and certification programs.
             </p>
-            <a href="https://petpartners.org" target="_blank" class="org-link">
+            <a href="https://petpartners.org"
+               target="_blank"
+               rel="noopener noreferrer external"
+               class="org-link">
               Visit Website <i class="fas fa-external-link-alt"></i>
             </a>
           </div>
@@ -673,7 +676,10 @@
               Focuses on regulating, testing, and certifying therapy dogs and handlers for 
               volunteer work in various facilities.
             </p>
-            <a href="https://www.tdi-dog.org" target="_blank" class="org-link">
+<a href="https://www.tdi-dog.org"
+   target="_blank"
+   rel="noopener noreferrer external"
+   class="org-link">
               Visit Website <i class="fas fa-external-link-alt"></i>
             </a>
           </div>
@@ -684,7 +690,10 @@
               Professional Association of Therapeutic Horsemanship, specializing in equine-assisted 
               therapy and hippotherapy programs.
             </p>
-            <a href="https://www.pathintl.org" target="_blank" class="org-link">
+<a href="https://www.pathintl.org"
+   target="_blank"
+   rel="noopener noreferrer external"
+   class="org-link">
               Visit Website <i class="fas fa-external-link-alt"></i>
             </a>
           </div>
@@ -695,7 +704,10 @@
               Provides testing, certification, registration, support, and insurance for therapy 
               dog/handler teams.
             </p>
-            <a href="https://www.therapydogs.com" target="_blank" class="org-link">
+<a href="https://www.therapydogs.com"
+   target="_blank"
+   rel="noopener noreferrer external"
+   class="org-link">
               Visit Website <i class="fas fa-external-link-alt"></i>
             </a>
           </div>
@@ -887,7 +899,7 @@
 
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="../../js/pages/animal-safety/animal-therapy.js"></script>
+    <script src="js/pages/animal-safety/animal-therapy.js"></script>
     <script>
       // Initialize AOS
       AOS.init({
@@ -900,7 +912,7 @@
       // Load Navbar and Footer
       document.addEventListener('DOMContentLoaded', function() {
         // Load Navbar
-        fetch('../../components/navbar.html')
+        fetch('components/navbar.html')
           .then(response => {
             if (!response.ok) throw new Error('Navbar not found');
             return response.text();
@@ -917,7 +929,7 @@
           });
 
         // Load Footer
-        fetch('../../components/footer.html')
+        fetch('components/footer.html')
           .then(response => {
             if (!response.ok) throw new Error('Footer not found');
             return response.text();

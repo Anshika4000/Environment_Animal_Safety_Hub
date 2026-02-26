@@ -7,24 +7,55 @@ document.addEventListener('DOMContentLoaded', () => {
     renderResilienceTools();
     renderCommunityPoints();
     renderGuidance();
+    setupResilienceForm();
+    setupBlockSelection();
 });
 
 function initBlackoutMap() {
-    const map = L.map('blackout-map').setView([28.6139, 77.2090], 13);
+    window.blackoutMap = L.map('blackout-map').setView([28.6139, 77.2090], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+    }).addTo(window.blackoutMap);
     // Demo vulnerability blocks
-    const blocks = [
-        {coords: [[28.62,77.21],[28.62,77.22],[28.61,77.22],[28.61,77.21]], risk: 'high'},
-        {coords: [[28.61,77.20],[28.61,77.21],[28.60,77.21],[28.60,77.20]], risk: 'medium'},
-        {coords: [[28.615,77.215],[28.615,77.225],[28.605,77.225],[28.605,77.215]], risk: 'low'}
+    window.blocks = [
+        {id: 1, coords: [[28.62,77.21],[28.62,77.22],[28.61,77.22],[28.61,77.21]], risk: 'high', name: 'Block A', support: ['Cooling Center', 'Volunteer'], comms: ['Radio Hub']},
+        {id: 2, coords: [[28.61,77.20],[28.61,77.21],[28.60,77.21],[28.60,77.20]], risk: 'medium', name: 'Block B', support: ['Medicine Storage'], comms: ['WiFi Point']},
+        {id: 3, coords: [[28.615,77.215],[28.615,77.225],[28.605,77.225],[28.605,77.215]], risk: 'low', name: 'Block C', support: ['Volunteer'], comms: ['Phone Booth']}
     ];
-    blocks.forEach(block => {
-        L.polygon(block.coords, {
+    window.blockLayers = [];
+    window.blocks.forEach(block => {
+        const layer = L.polygon(block.coords, {
             color: block.risk === 'high' ? 'red' : block.risk === 'medium' ? 'orange' : 'green',
             fillOpacity: block.risk === 'high' ? 0.4 : block.risk === 'medium' ? 0.2 : 0.1
-        }).bindPopup(`<b>Block</b><br>Vulnerability: ${block.risk}`).addTo(map);
+        }).addTo(window.blackoutMap);
+        layer.on('click', () => showBlockInfo(block));
+        window.blockLayers.push(layer);
+    });
+}
+// --- Interactive Block Selection ---
+function setupBlockSelection() {
+    // Already handled in map click events
+}
+function showBlockInfo(block) {
+    const info = document.getElementById('selected-block-info');
+    if (info) {
+        info.innerHTML = `
+            <b>${block.name}</b><br>
+            Vulnerability: <span style="color:${block.risk==='high'?'red':block.risk==='medium'?'orange':'green'}">${block.risk}</span><br>
+            Support Points: ${block.support.join(', ')}<br>
+            Communication: ${block.comms.join(', ')}
+        `;
+    }
+}
+// --- Resilience Form Handling ---
+function setupResilienceForm() {
+    document.getElementById('resilience-tools').addEventListener('submit', function(e) {
+        if (e.target && e.target.id === 'resilience-form') {
+            e.preventDefault();
+            const data = Object.fromEntries(new FormData(e.target).entries());
+            document.getElementById('resilience-form-status').textContent = 'Plan saved! Backup: '+data.power+', Cooling: '+data.cooling+', Medicine: '+data.medicine+', Contact: '+data.contact;
+            e.target.reset();
+        }
     });
 }
 

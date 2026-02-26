@@ -1,97 +1,106 @@
-// Urban Heat Refuge Navigator - Main JS
+
+// Urban Heat Refuge Navigator - Modular Main JS
 // Author: Ayaanshaikh12243 & Contributors
-// Description: Interactive map for finding cooling centers, shaded routes, water refill points, and low-risk travel windows
+// Description: Modular, advanced map for finding cooling centers, shaded routes, water refill points, and low-risk travel windows
 
-// --- CONFIGURATION ---
-const DEFAULT_COORDS = [40.7128, -74.0060]; // Default to New York City
+import { coolingCenters, waterRefillPoints, shadedRoutes, lowRiskAreas, getHeatRiskOverlay, fetchCoolingCenters, fetchWaterRefillPoints, fetchShadedRoutes, fetchLowRiskAreas } from './js/data.js';
+import { showInfo, showLoading, showNotification } from './js/ui.js';
+import { enableKeyboardNavigation, setAriaLabels } from './js/accessibility.js';
+import { enableRouteSelection } from './js/route-planner.js';
+import { showAlert, showHydrationReminder } from './js/notifications.js';
+import { enableFeedbackForm } from './js/feedback.js';
+
+const DEFAULT_COORDS = [40.7128, -74.0060];
 const DEFAULT_ZOOM = 13;
-
-// Example data (replace with real API/data source in production)
-const coolingCenters = [
-    { name: "Central Library Cooling Center", coords: [40.7122, -74.0059], address: "5th Ave & 42nd St" },
-    { name: "Community Pool", coords: [40.715, -74.002], address: "123 Main St" },
-    { name: "City Hall Cooling Center", coords: [40.713, -74.007], address: "City Hall Park" }
-];
-const waterRefillPoints = [
-    { name: "Water Refill - Bryant Park", coords: [40.7536, -73.9832] },
-    { name: "Water Refill - Union Square", coords: [40.7359, -73.9911] }
-];
-const shadedRoutes = [
-    // Each route is an array of [lat, lng] points
-    [ [40.7122, -74.0059], [40.713, -74.007], [40.715, -74.002] ],
-    [ [40.7536, -73.9832], [40.7359, -73.9911] ]
-];
-const lowRiskAreas = [
-    { name: "Shaded Park Area", coords: [40.714, -74.004], radius: 200 },
-    { name: "Riverside Walk", coords: [40.720, -74.010], radius: 150 }
-];
-
-// --- MAP INITIALIZATION ---
 let map = L.map('map').setView(DEFAULT_COORDS, DEFAULT_ZOOM);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-// --- MARKERS & LAYERS ---
-const coolingLayer = L.layerGroup();
-const waterLayer = L.layerGroup();
-const shadedLayer = L.layerGroup();
-const lowRiskLayer = L.layerGroup();
+// --- LAYERS ---
+const coolingLayer = L.layerGroup().addTo(map);
+const waterLayer = L.layerGroup().addTo(map);
+const shadedLayer = L.layerGroup().addTo(map);
+const lowRiskLayer = L.layerGroup().addTo(map);
+const riskOverlayLayer = L.geoJSON(null, { style: feature => riskStyle(feature.properties.risk) }).addTo(map);
 
-coolingCenters.forEach(center => {
-    const marker = L.marker(center.coords, {
-        icon: L.icon({
-            iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
-            popupAnchor: [0, -32]
-        })
-    }).bindPopup(`<b>${center.name}</b><br>${center.address}`);
-    marker.on('click', () => showInfo(center.name, center.address));
-    coolingLayer.addLayer(marker);
-});
+function riskStyle(risk) {
+    if (risk === 'high') return { color: '#e53935', fillColor: '#e57373', fillOpacity: 0.4 };
+    if (risk === 'medium') return { color: '#ffb300', fillColor: '#ffe082', fillOpacity: 0.3 };
+    return { color: '#43a047', fillColor: '#b9f6ca', fillOpacity: 0.2 };
+}
 
-waterRefillPoints.forEach(point => {
-    const marker = L.marker(point.coords, {
-        icon: L.icon({
-            iconUrl: 'https://cdn-icons-png.flaticon.com/512/2917/2917990.png',
-            iconSize: [28, 28],
-            iconAnchor: [14, 28],
-            popupAnchor: [0, -28]
-        })
-    }).bindPopup(`<b>${point.name}</b>`);
-    marker.on('click', () => showInfo(point.name, 'Water refill point'));
-    waterLayer.addLayer(marker);
-});
+// --- DATA LOADING ---
+async function loadAllData() {
+    showLoading('Loading map data...');
+    coolingLayer.clearLayers();
+    waterLayer.clearLayers();
+    shadedLayer.clearLayers();
+    lowRiskLayer.clearLayers();
+    // Cooling Centers
+    const centers = await fetchCoolingCenters();
+    centers.forEach(center => {
+        const marker = L.marker(center.coords, {
+            icon: L.icon({
+                iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32]
+            })
+        }).bindPopup(`<b>${center.name}</b><br>${center.address}<br>Rating: ${center.rating} ⭐<br>Hours: ${center.hours}`);
+        marker.on('click', () => showInfo(center.name, `${center.address}<br>Rating: ${center.rating} ⭐<br>Hours: ${center.hours}`));
+        coolingLayer.addLayer(marker);
+    });
+    // Water Refill Points
+    const waterPoints = await fetchWaterRefillPoints();
+    waterPoints.forEach(point => {
+        const marker = L.marker(point.coords, {
+            icon: L.icon({
+                iconUrl: 'https://cdn-icons-png.flaticon.com/512/2917/2917990.png',
+                iconSize: [28, 28],
+                iconAnchor: [14, 28],
+                popupAnchor: [0, -28]
+            })
+        }).bindPopup(`<b>${point.name}</b>`);
+        marker.on('click', () => showInfo(point.name, 'Water refill point'));
+        waterLayer.addLayer(marker);
+    });
+    // Shaded Routes
+    const routes = await fetchShadedRoutes();
+    routes.forEach(route => {
+        const polyline = L.polyline(route, { color: '#795548', weight: 6, opacity: 0.7, dashArray: '10,10' });
+        polyline.on('click', () => showInfo('Shaded Route', 'This route offers maximum shade.'));
+        shadedLayer.addLayer(polyline);
+    });
+    // Low Risk Areas
+    const areas = await fetchLowRiskAreas();
+    areas.forEach(area => {
+        const circle = L.circle(area.coords, {
+            color: '#ffd600',
+            fillColor: '#ffd600',
+            fillOpacity: 0.3,
+            radius: area.radius
+        }).bindPopup(`<b>${area.name}</b><br>Low heat risk area`);
+        circle.on('click', () => showInfo(area.name, 'Low heat risk area'));
+        lowRiskLayer.addLayer(circle);
+    });
+    showInfo('Map Ready', 'Select a feature on the map for more information.');
+}
 
-shadedRoutes.forEach(route => {
-    const polyline = L.polyline(route, { color: '#795548', weight: 6, opacity: 0.7, dashArray: '10,10' });
-    polyline.on('click', () => showInfo('Shaded Route', 'This route offers maximum shade.'));
-    shadedLayer.addLayer(polyline);
-});
-
-lowRiskAreas.forEach(area => {
-    const circle = L.circle(area.coords, {
-        color: '#ffd600',
-        fillColor: '#ffd600',
-        fillOpacity: 0.3,
-        radius: area.radius
-    }).bindPopup(`<b>${area.name}</b><br>Low heat risk area`);
-    circle.on('click', () => showInfo(area.name, 'Low heat risk area'));
-    lowRiskLayer.addLayer(circle);
-});
-
-coolingLayer.addTo(map);
-waterLayer.addTo(map);
-shadedLayer.addTo(map);
-lowRiskLayer.addTo(map);
+// --- RISK OVERLAY (Animated by time window) ---
+function updateRiskOverlay(hour) {
+    const overlay = getHeatRiskOverlay(hour);
+    riskOverlayLayer.clearLayers();
+    riskOverlayLayer.addData(overlay);
+}
 
 // --- LAYER CONTROL ---
 L.control.layers(null, {
     'Cooling Centers': coolingLayer,
     'Water Refill Points': waterLayer,
     'Shaded Routes': shadedLayer,
-    'Low-Risk Areas': lowRiskLayer
+    'Low-Risk Areas': lowRiskLayer,
+    'Heat Risk Overlay': riskOverlayLayer
 }).addTo(map);
 
 // --- GEOLOCATION ---
@@ -109,10 +118,10 @@ document.getElementById('locate-btn').addEventListener('click', () => {
                 })
             }).addTo(map).bindPopup('You are here!').openPopup();
         }, err => {
-            alert('Unable to access location.');
+            showAlert('Unable to access location.');
         });
     } else {
-        alert('Geolocation not supported.');
+        showAlert('Geolocation not supported.');
     }
 });
 
@@ -125,6 +134,7 @@ document.getElementById('search').addEventListener('keydown', function(e) {
 
 function geocodeAddress(address) {
     if (!address) return;
+    showLoading('Searching...');
     fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`)
         .then(res => res.json())
         .then(data => {
@@ -139,29 +149,40 @@ function geocodeAddress(address) {
                         popupAnchor: [0, -24]
                     })
                 }).addTo(map).bindPopup(`Search result:<br>${display_name}`).openPopup();
+                showInfo('Search Result', display_name);
             } else {
-                alert('Location not found.');
+                showAlert('Location not found.');
             }
         });
 }
 
-// --- TIME WINDOW FILTER (Simulated) ---
+// --- TIME WINDOW FILTER (Animated Risk Overlay) ---
 document.getElementById('time-window').addEventListener('change', function() {
-    // In a real app, filter data based on time of day and risk
+    const val = this.value;
+    let hour = 12;
+    if (val === 'morning') hour = 9;
+    else if (val === 'afternoon') hour = 15;
+    else if (val === 'evening') hour = 19;
+    else hour = new Date().getHours();
+    updateRiskOverlay(hour);
     showInfo('Time Window', `Showing data for: ${this.options[this.selectedIndex].text}`);
 });
 
-// --- INFO PANEL ---
-function showInfo(title, content) {
-    document.getElementById('info-content').innerHTML = `<b>${title}</b><br>${content}`;
-}
+// --- ROUTE PLANNER ---
+enableRouteSelection(map);
 
-// --- Accessibility: Keyboard Navigation ---
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Tab') {
-        // Optionally, highlight focused controls
-    }
-});
+// --- FEEDBACK FORM ---
+enableFeedbackForm();
+
+// --- ACCESSIBILITY ---
+enableKeyboardNavigation();
+setAriaLabels();
+
+// --- HYDRATION REMINDER ---
+showHydrationReminder();
+
+// --- INITIALIZE ---
+loadAllData();
 
 // --- Responsive Enhancements ---
 window.addEventListener('resize', function() {

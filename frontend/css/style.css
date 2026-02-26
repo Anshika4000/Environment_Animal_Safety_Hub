@@ -7,6 +7,24 @@
 /* ===========================================
    CSS CUSTOM PROPERTIES (VARIABLES)
    =========================================== */
+/* ===== NAVBAR FIX - Prevent Layout Shift ===== */
+
+#navbar-container {
+  height: 80px;              /* Reserve exact space */
+  width: 100%;
+}
+
+.navbar {
+  position: fixed;           /* Lock navbar */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2000;             /* Higher than other components */
+}
+
+body {
+  padding-top: 80px;         /* Push content below navbar */
+}
 
 :root {
   /* Primary Colors */

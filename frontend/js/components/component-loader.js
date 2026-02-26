@@ -17,20 +17,24 @@
      * @returns {string} Relative path prefix for asset loading
      */
     function getRelativePrefix() {
-        const path = window.location.pathname;
+    const path = window.location.pathname;
 
-        if (path.includes('/pages/')) {
-            const pathParts = path.split('/');
-            const pagesIndex = pathParts.indexOf('pages');
+    if (path.includes('/frontend/pages/')) {
+        const parts = path.split('/');
+        const pagesIndex = parts.indexOf('pages');
+        const depth = parts.length - pagesIndex - 2;
 
-            // Check if we are in a sub-subfolder (e.g., /pages/blogs/post.html)
-            if (pagesIndex !== -1 && pagesIndex < pathParts.length - 2) {
-                return '../../';
-            }
-            return '../';
-        }
+        if (depth >= 2) return '../../';
+        return '../';
+    }
+
+    // If we are directly inside /frontend/
+    if (path.includes('/frontend/')) {
         return '';
     }
+
+    return '';
+}
 
     const prefix = getRelativePrefix();
 
@@ -68,14 +72,20 @@
                     i18nScript.src = prefix + 'i18n/i18n-manager.js';
                     i18nScript.onload = async () => {
                         if (window.I18nManager) {
-                            await window.I18nManager.init(window.PreferencesManager.getLanguage());
-                        }
+const language = window.PreferencesManager
+    ? window.PreferencesManager.getLanguage()
+    : 'en';
+
+await window.I18nManager.init(language);                        }
                         resolve();
                     };
                     document.head.appendChild(i18nScript);
                 } else {
-                    await window.I18nManager.init(window.PreferencesManager.getLanguage());
-                    resolve();
+const language = window.PreferencesManager
+    ? window.PreferencesManager.getLanguage()
+    : 'en';
+
+await window.I18nManager.init(language);                    resolve();
                 }
             };
 
@@ -86,14 +96,21 @@
             }
 
             const prefScript = document.createElement('script');
-            prefScript.src = prefix + 'js/global/preferences-manager.js';
-            prefScript.onload = () => {
-                if (window.PreferencesManager) {
-                    window.PreferencesManager.init();
-                }
-                loadI18n();
-            };
-            document.head.appendChild(prefScript);
+prefScript.src = prefix + 'js/global/preferences-manager.js';
+
+prefScript.onload = () => {
+    if (window.PreferencesManager) {
+        window.PreferencesManager.init();
+    }
+    loadI18n();
+};
+
+prefScript.onerror = () => {
+    console.warn('PreferencesManager not found, continuing without it.');
+    loadI18n(); // Continue even if missing
+};
+
+document.head.appendChild(prefScript);
         });
     }
 

@@ -1,159 +1,194 @@
-/**
- * Pollution Awareness Quiz - Environmental Education Assessment
- *
- * An interactive quiz focused on different types of pollution, their impacts,
- * and ways to reduce pollution. Designed to educate users about air, water,
- * soil, and noise pollution and promote sustainable practices.
- *
- * Now extends BaseQuiz for unified progress tracking.
- *
- * @author Environment Animal Safety Hub Team
- * @version 2.0.0
- * @since 2024
- */
+// ---------------------------
+// Pollution Awareness Quiz
+// Standalone Version (No dependencies)
+// ---------------------------
 
-// DOM elements
-const elements = {
-  startScreen: document.getElementById('startScreen'),
-  quizScreen: document.getElementById('quizScreen'),
-  resultScreen: document.getElementById('resultScreen'),
-  questionEl: document.getElementById('question'),
-  optionsEl: document.getElementById('options'),
-  timeEl: document.getElementById('time'),
-  scoreEl: document.getElementById('score'),
-  remarkEl: document.getElementById('remark'),
-  progressText: document.querySelector('.progress-metrics span:first-child'),
-  progressFill: document.getElementById('progressFill')
-};
+let currentQuestion = 0;
+let score = 0;
+let selectedAnswer = null;
+let timer;
+let timeLeft = 180;
 
-// Load quiz data and create instance
-let pollutionAwarenessQuiz = null;
+// Questions
+const questions = [
+{
+question: "Which type of pollution is caused by vehicle emissions?",
+options: ["Water Pollution","Air Pollution","Soil Pollution","Noise Pollution"],
+answer: 1
+},
+{
+question: "Which gas is the major contributor to global warming?",
+options: ["Oxygen","Carbon Dioxide","Nitrogen","Hydrogen"],
+answer: 1
+},
+{
+question: "What is the main cause of water pollution?",
+options: ["Industrial waste","Solar energy","Wind energy","Plant growth"],
+answer: 0
+},
+{
+question: "Noise pollution mainly affects which organ?",
+options: ["Eyes","Ears","Heart","Skin"],
+answer: 1
+},
+{
+question: "Plastic waste mostly causes which type of pollution?",
+options: ["Soil Pollution","Air Pollution","Light Pollution","Thermal Pollution"],
+answer: 0
+},
+{
+question: "Which helps reduce air pollution?",
+options: ["Planting trees","Burning waste","Using more cars","Cutting forests"],
+answer: 0
+},
+{
+question: "Which pollution affects marine life most?",
+options: ["Water Pollution","Noise Pollution","Air Pollution","Light Pollution"],
+answer: 0
+},
+{
+question: "Acid rain is caused by?",
+options: ["Sulfur dioxide & Nitrogen oxides","Oxygen & Hydrogen","Carbon & Helium","Methane & Neon"],
+answer: 0
+},
+{
+question: "Major source of soil pollution?",
+options: ["Chemical fertilizers","Rainwater","Sunlight","Wind"],
+answer: 0
+},
+{
+question: "Best method to reduce pollution?",
+options: ["Reduce Reuse Recycle","Burn fuel","Cut trees","Increase plastic"],
+answer: 0
+}
+];
 
-async function loadPollutionAwarenessQuiz() {
-  try {
-    const response = await fetch('../../assets/data/quiz-data.json');
-    if (!response.ok) {
-      throw new Error('Failed to load quiz data');
-    }
-    const data = await response.json();
-    const quizData = data.quizzes.find(q => q.id === 'pollution-awareness');
-    if (!quizData) {
-      throw new Error('Pollution awareness quiz data not found');
-    }
 
-    const quizConfig = {
-      questions: quizData.questions,
-      timeLimit: quizData.timeLimit,
-      progressKey: quizData.progressKey,
-      iconClass: quizData.iconClass,
-      elements: elements
-    };
+// ---------------------------
+// START QUIZ
+// ---------------------------
+function startQuiz(){
+document.getElementById("startScreen").style.display="none";
+document.getElementById("quizScreen").style.display="block";
 
-    pollutionAwarenessQuiz = new BaseQuiz(quizConfig);
-
-    // Override loadQuestion to include custom progress metrics
-    pollutionAwarenessQuiz.loadQuestion = function() {
-      // Call parent method
-      BaseQuiz.prototype.loadQuestion.call(this);
-
-      // Update custom progress metrics
-      const timeSpentEl = document.getElementById('timeSpent');
-      if (timeSpentEl) {
-        const timeSpent = this.config.timeLimit - this.time;
-        timeSpentEl.textContent = `Time Spent: ${timeSpent}s`;
-      }
-
-      const questionsCompleted = document.getElementById('questionsCompleted');
-      if (questionsCompleted) {
-        questionsCompleted.textContent = `Completed: ${this.index + 1}/${this.questions.length}`;
-      }
-    };
-
-    // Override showResult for custom remarks
-    pollutionAwarenessQuiz.showResult = function() {
-      // Call parent method
-      BaseQuiz.prototype.showResult.call(this);
-
-      // Custom remarks for pollution awareness
-      let remark = "";
-      if (this.score >= 8) {
-        remark = "🌟 Pollution Fighter!";
-      } else if (this.score >= 5) {
-        remark = "👍 Good Awareness!";
-      } else {
-        remark = "🌱 Keep Learning!";
-      }
-
-      if (this.config.elements.remarkEl) {
-        this.config.elements.remarkEl.textContent = remark;
-      }
-    };
-
-    pollutionAwarenessQuiz.initializeQuiz();
-
-    // Add event listeners for quiz interactions
-    setupEventListeners();
-  } catch (error) {
-    console.error('Error loading pollution awareness quiz:', error);
-    alert('Failed to load quiz data. Please try again later.');
-  }
+startTimer();
+loadQuestion();
 }
 
-// Setup event listeners
-function setupEventListeners() {
-  // Start quiz button
-  const startBtn = document.getElementById('startQuizBtn');
-  if (startBtn) {
-    startBtn.addEventListener('click', () => pollutionAwarenessQuiz.startQuiz());
-  }
 
-  // Resume saved quiz button
-  const resumeSavedBtn = document.getElementById('resumeSavedQuizBtn');
-  if (resumeSavedBtn) {
-    resumeSavedBtn.addEventListener('click', () => pollutionAwarenessQuiz.resumeQuiz());
-  }
+// ---------------------------
+// TIMER
+// ---------------------------
+function startTimer(){
+timer = setInterval(()=>{
+timeLeft--;
 
-  // Next question button
-  const nextBtn = document.getElementById('nextQuestionBtn');
-  if (nextBtn) {
-    nextBtn.addEventListener('click', () => pollutionAwarenessQuiz.nextQuestion());
-  }
+let min = Math.floor(timeLeft/60);
+let sec = timeLeft%60;
 
-  // Pause button
-  const pauseBtn = document.getElementById('pauseBtn');
-  if (pauseBtn) {
-    pauseBtn.addEventListener('click', () => {
-      clearInterval(pollutionAwarenessQuiz.timer);
-      pollutionAwarenessQuiz.timer = null;
-      pollutionAwarenessQuiz.saveProgress();
-      pauseBtn.style.display = 'none';
-      document.getElementById('resumeBtn').style.display = 'inline-block';
-      alert("Quiz paused! Click resume to continue.");
-    });
-  }
+document.getElementById("time").innerText =
+`${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
 
-  // Resume button
-  const resumeBtn = document.getElementById('resumeBtn');
-  if (resumeBtn) {
-    resumeBtn.addEventListener('click', () => {
-      resumeBtn.style.display = 'none';
-      document.getElementById('pauseBtn').style.display = 'inline-block';
-      pollutionAwarenessQuiz.startTimer();
-    });
-  }
-
-  // Play again button
-  const playAgainBtn = document.getElementById('playAgainBtn');
-  if (playAgainBtn) {
-    playAgainBtn.addEventListener('click', () => location.reload());
-  }
-
-  // Back button
-  const backBtn = document.getElementById('backBtn');
-  if (backBtn) {
-    backBtn.addEventListener('click', () => window.location.href = '../games/kids-zone.html');
-  }
+if(timeLeft<=0){
+clearInterval(timer);
+showResult();
+}
+},1000);
 }
 
-// Load quiz on page load
-document.addEventListener('DOMContentLoaded', loadPollutionAwarenessQuiz);
+
+// ---------------------------
+// LOAD QUESTION
+// ---------------------------
+function loadQuestion(){
+
+selectedAnswer=null;
+
+const q = questions[currentQuestion];
+
+document.getElementById("question").innerText =
+`${currentQuestion+1}. ${q.question}`;
+
+const optionsHTML = q.options.map((opt,i)=>`
+<div class="option" onclick="selectOption(${i},this)">
+${opt}
+</div>
+`).join("");
+
+document.getElementById("options").innerHTML = optionsHTML;
+
+updateProgress();
+}
+
+
+// ---------------------------
+// SELECT OPTION
+// ---------------------------
+function selectOption(index,element){
+
+selectedAnswer=index;
+
+document.querySelectorAll(".option")
+.forEach(opt=>opt.classList.remove("selected"));
+
+element.classList.add("selected");
+}
+
+
+// ---------------------------
+// NEXT QUESTION
+// ---------------------------
+function nextQuestion(){
+
+if(selectedAnswer===null){
+alert("Please select an answer");
+return;
+}
+
+if(selectedAnswer === questions[currentQuestion].answer){
+score++;
+}
+
+currentQuestion++;
+
+if(currentQuestion < questions.length){
+loadQuestion();
+}else{
+showResult();
+}
+}
+
+
+// ---------------------------
+// RESULT
+// ---------------------------
+function showResult(){
+
+clearInterval(timer);
+
+document.getElementById("quizScreen").style.display="none";
+document.getElementById("resultScreen").style.display="block";
+
+document.getElementById("score").innerText =
+`${score} / ${questions.length}`;
+
+let remark="Good!";
+if(score==questions.length) remark="Excellent!";
+else if(score<5) remark="Keep Learning!";
+
+document.getElementById("remark").innerText = remark;
+}
+
+
+// ---------------------------
+// PROGRESS BAR
+// ---------------------------
+function updateProgress(){
+
+let percent = ((currentQuestion)/questions.length)*100;
+
+document.getElementById("progressFill").style.width = percent+"%";
+
+document.getElementById("questionsCompleted").innerText =
+`Completed: ${currentQuestion}/${questions.length}`;
+}

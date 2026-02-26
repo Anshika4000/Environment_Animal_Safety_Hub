@@ -10,7 +10,11 @@
   "scope": "./",
   "lang": "en",
   "dir": "ltr",
-  "categories": ["education", "lifestyle", "environment"],
+  "categories": [
+    "education",
+    "lifestyle",
+    "environment"
+  ],
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",
@@ -61,43 +65,43 @@
       "purpose": "maskable any"
     }
   ],
-  "screenshots": [
-    {
-      "src": "assets/screenshots/screenshot-wide.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "EcoLife Desktop View"
-    },
-    {
-      "src": "assets/screenshots/screenshot-mobile.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "EcoLife Mobile View"
-    }
-  ],
+  "screenshots": [],
   "shortcuts": [
     {
       "name": "Animal Rescue",
       "short_name": "Rescue",
       "description": "Learn about animal rescue and adoption",
       "url": "./pages/animal-safety/pet-adoption.html",
-      "icons": [{ "src": "assets/icons/icon-96x96.png", "sizes": "96x96" }]
+      "icons": [
+        {
+          "src": "assets/icons/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
     },
     {
       "name": "Plant Care Tips",
       "short_name": "Plants",
       "description": "Get plant care tips and gardening guides",
       "url": "./pages/plant-care.html",
-      "icons": [{ "src": "assets/icons/icon-96x96.png", "sizes": "96x96" }]
+      "icons": [
+        {
+          "src": "assets/icons/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
     },
     {
       "name": "Climate Quiz",
       "short_name": "Quiz",
       "description": "Test your climate knowledge",
       "url": "./index.html#climate-quiz",
-      "icons": [{ "src": "assets/icons/icon-96x96.png", "sizes": "96x96" }]
+      "icons": [
+        {
+          "src": "assets/icons/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
     }
   ],
   "related_applications": [],

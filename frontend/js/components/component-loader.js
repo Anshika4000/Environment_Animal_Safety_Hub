@@ -19,16 +19,20 @@
     function getRelativePrefix() {
     const path = window.location.pathname;
 
+    // If inside frontend/pages/
     if (path.includes('/frontend/pages/')) {
-        const parts = path.split('/');
-        const pagesIndex = parts.indexOf('pages');
-        const depth = parts.length - pagesIndex - 2;
+        const afterPages = path.split('/frontend/pages/')[1];
 
-        if (depth >= 2) return '../../';
+        // If nested (example: pages/community/donation.html)
+        if (afterPages.includes('/')) {
+            return '../../';
+        }
+
+        // Direct page like pages/about.html
         return '../';
     }
 
-    // If we are directly inside /frontend/
+    // If inside frontend root (index.html)
     if (path.includes('/frontend/')) {
         return '';
     }

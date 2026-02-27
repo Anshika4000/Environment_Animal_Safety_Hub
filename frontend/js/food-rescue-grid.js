@@ -284,6 +284,93 @@ const foodRescue = (() => {
 
 document.addEventListener('DOMContentLoaded', () => {
     foodRescue.init();
+
+    // Tab/view switching logic
+    const navBtns = document.querySelectorAll('.nav-btn');
+    const views = document.querySelectorAll('.view');
+    navBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            navBtns.forEach(b => b.classList.remove('active'));
+            views.forEach(v => v.classList.remove('active'));
+            this.classList.add('active');
+            const viewName = this.getAttribute('data-view');
+            const viewSection = document.getElementById(viewName + '-view');
+            if (viewSection) viewSection.classList.add('active');
+        });
+    });
+
+    // --- Robust Error Handling & Offline Support ---
+    // Notification UI
+    function showNotification(msg, type = 'info', timeout = 4000) {
+        let notif = document.getElementById('notification-banner');
+        if (!notif) {
+            notif = document.createElement('div');
+            notif.id = 'notification-banner';
+            notif.style.position = 'fixed';
+            notif.style.top = '0';
+            notif.style.left = '0';
+            notif.style.width = '100%';
+            notif.style.zIndex = '9999';
+            notif.style.padding = '1em';
+            notif.style.textAlign = 'center';
+            notif.style.fontWeight = 'bold';
+            notif.style.background = type === 'error' ? '#d32f2f' : (type === 'success' ? '#388e3c' : '#1976d2');
+            notif.style.color = '#fff';
+            document.body.appendChild(notif);
+        }
+        notif.textContent = msg;
+        notif.style.display = 'block';
+        if (timeout) setTimeout(() => { notif.style.display = 'none'; }, timeout);
+    }
+
+    // Offline/online detection
+    window.addEventListener('offline', () => showNotification('You are offline. Actions will be queued.', 'error', 6000));
+    window.addEventListener('online', () => {
+        showNotification('Back online! Syncing queued actions...', 'success', 4000);
+        syncQueuedActions();
+    });
+
+    // Action queueing for offline
+    function queueAction(action) {
+        const queue = JSON.parse(localStorage.getItem('actionQueue') || '[]');
+        queue.push(action);
+        localStorage.setItem('actionQueue', JSON.stringify(queue));
+        showNotification('Action queued for sync when online.', 'info');
+    }
+
+    async function syncQueuedActions() {
+        const queue = JSON.parse(localStorage.getItem('actionQueue') || '[]');
+        if (!queue.length) return;
+        let success = 0, fail = 0;
+        for (const action of queue) {
+            try {
+                // Replace with real API call
+                await fakeApiCall(action);
+                success++;
+            } catch (e) {
+                fail++;
+            }
+        }
+        localStorage.setItem('actionQueue', '[]');
+        if (success) showNotification(`${success} queued actions synced.`, 'success');
+        if (fail) showNotification(`${fail} actions failed to sync.`, 'error');
+    }
+
+    // Example fake API call with error handling
+    async function fakeApiCall(action) {
+        // Simulate network/API error randomly
+        if (!navigator.onLine || Math.random() < 0.2) throw new Error('Network/API error');
+        return new Promise(resolve => setTimeout(resolve, 300));
+    }
+
+    // Service Worker registration
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/frontend/service-worker.js').then(() => {
+            console.log('Service Worker registered');
+        }).catch(() => {
+            showNotification('Service Worker registration failed.', 'error');
+        });
+    }
 });
 
 // =====================

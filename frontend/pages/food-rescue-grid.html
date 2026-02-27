@@ -141,13 +141,32 @@
         <section id="donations-view" class="view">
             <div class="view-header">
                 <h2>Active Food Donations</h2>
-                <div class="view-actions">
-                    <select id="donation-filter">
-                        <option value="all">All Donations</option>
+                <div class="view-actions advanced-filters">
+                    <select id="donation-type-filter">
+                        <option value="all">All Types</option>
+                        <option value="restaurant">Restaurant</option>
+                        <option value="hotel">Hotel/Hostel</option>
+                        <option value="event">Event/Catering</option>
+                        <option value="household">Household</option>
+                        <option value="grocery">Grocery Store</option>
+                        <option value="bakery">Bakery</option>
+                    </select>
+                    <select id="donation-urgency-filter">
+                        <option value="all">All Urgencies</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                    <select id="donation-status-filter">
+                        <option value="all">All Statuses</option>
                         <option value="available">Available</option>
                         <option value="claimed">Claimed</option>
                         <option value="completed">Completed</option>
                     </select>
+                    <input type="date" id="donation-date-from" placeholder="From">
+                    <input type="date" id="donation-date-to" placeholder="To">
+                    <input type="text" id="donation-location-filter" placeholder="Location">
                     <input type="text" id="donation-search" placeholder="Search donations...">
                 </div>
             </div>
@@ -161,6 +180,34 @@
                 <button id="new-request-btn" class="btn-primary">
                     <i class="fas fa-plus"></i> New Request
                 </button>
+                <div class="view-actions advanced-filters">
+                    <select id="request-type-filter">
+                        <option value="all">All Types</option>
+                        <option value="restaurant">Restaurant</option>
+                        <option value="hotel">Hotel/Hostel</option>
+                        <option value="event">Event/Catering</option>
+                        <option value="household">Household</option>
+                        <option value="grocery">Grocery Store</option>
+                        <option value="bakery">Bakery</option>
+                    </select>
+                    <select id="request-urgency-filter">
+                        <option value="all">All Urgencies</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                    <select id="request-status-filter">
+                        <option value="all">All Statuses</option>
+                        <option value="available">Available</option>
+                        <option value="claimed">Claimed</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <input type="date" id="request-date-from" placeholder="From">
+                    <input type="date" id="request-date-to" placeholder="To">
+                    <input type="text" id="request-location-filter" placeholder="Location">
+                    <input type="text" id="request-search" placeholder="Search requests...">
+                </div>
             </div>
             <div id="requests-grid" class="requests-grid"></div>
         </section>

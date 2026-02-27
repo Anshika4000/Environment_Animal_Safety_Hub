@@ -16,41 +16,45 @@
  */
 
 /**
- * Initialize theme toggle functionality when DOM is loaded
+ * Community pages now rely on centralized global theme management.
+ * This script remains as a compatibility layer and avoids rebinding
+ * if the global theme handler is already active.
  */
 document.addEventListener('DOMContentLoaded', () => {
-    const toggleButton = document.getElementById('themeToggle');
+    if (window.__ECO_THEME_TOGGLE_BOUND__) {
+        return;
+    }
 
-    if (!toggleButton) return;
+    const toggleButtons = Array.from(document.querySelectorAll('#themeToggle'));
+    if (!toggleButtons.length) return;
 
-    // Load saved theme or default to light
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    const STORAGE_KEY = 'ecolife_theme';
+    const savedTheme = localStorage.getItem(STORAGE_KEY) || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
     updateIcon(savedTheme);
 
-    /**
-     * Handle theme toggle button click
-     */
-    toggleButton.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    toggleButtons.forEach((toggleButton) => {
+        toggleButton.addEventListener('click', () => {
+            if (window.PreferencesManager && typeof window.PreferencesManager.toggleTheme === 'function') {
+                const nextTheme = window.PreferencesManager.toggleTheme();
+                updateIcon(nextTheme);
+                return;
+            }
 
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateIcon(newTheme);
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem(STORAGE_KEY, newTheme);
+            updateIcon(newTheme);
+        });
     });
 
-    /**
-     * Update toggle button icon based on current theme
-     * @param {string} theme - Current theme ('light' or 'dark')
-     */
     function updateIcon(theme) {
-        if (theme === 'dark') {
-            toggleButton.innerHTML = '<i class="fa-solid fa-sun"></i>';
-            toggleButton.style.color = '#ffd700'; // Yellow sun
-        } else {
-            toggleButton.innerHTML = '<i class="fa-solid fa-moon"></i>';
-            toggleButton.style.color = '#ffffff'; // White moon
-        }
+        toggleButtons.forEach((toggleButton) => {
+            toggleButton.innerHTML = theme === 'dark'
+                ? '<i class="fa-solid fa-sun"></i>'
+                : '<i class="fa-solid fa-moon"></i>';
+            toggleButton.style.color = theme === 'dark' ? '#ffd700' : '#ffffff';
+        });
     }
 });

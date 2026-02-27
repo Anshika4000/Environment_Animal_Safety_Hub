@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeGroupsPage() {
     // Theme toggle functionality
     const themeToggle = document.getElementById('themeToggle');
-    if (themeToggle) {
+    if (themeToggle && !window.__ECO_THEME_TOGGLE_BOUND__) {
         themeToggle.addEventListener('click', toggleTheme);
     }
 
@@ -305,11 +305,11 @@ function toggleTheme() {
     if (body.classList.contains('dark-theme')) {
         body.classList.remove('dark-theme');
         themeToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
-        localStorage.setItem('theme', 'light');
+        localStorage.setItem('ecolife_theme', 'light');
     } else {
         body.classList.add('dark-theme');
         themeToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
-        localStorage.setItem('theme', 'dark');
+        localStorage.setItem('ecolife_theme', 'dark');
     }
 }
 
@@ -363,7 +363,7 @@ document.addEventListener('click', function(e) {
 });
 
 // Apply saved theme on page load
-const savedTheme = localStorage.getItem('theme');
+const savedTheme = localStorage.getItem('ecolife_theme');
 if (savedTheme === 'dark') {
     document.body.classList.add('dark-theme');
     const themeToggle = document.getElementById('themeToggle');

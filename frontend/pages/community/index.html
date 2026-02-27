@@ -2,40 +2,627 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EcoSphere | EcoLife</title>
   
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <link rel="stylesheet" href="css/global/utilities.css" />
-    <link rel="stylesheet" href="css/components/navbar.css" />
-    
-    <link rel="stylesheet" href="css/pages/community.css">
+  <style>
+    /* ====================================
+       Global Styles & Variables
+    ==================================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #2ecc71;
+      --primary-dark: #27ae60;
+      --primary-rgb: 46, 204, 113;
+      --secondary: #3498db;
+      --accent: #e74c3c;
+      --bg-dark: #0a1f0a;
+      --bg-card: rgba(20, 40, 20, 0.85);
+      --text-light: #ecf0f1;
+      --text-dim: #b0c4b1;
+      --border-glow: rgba(46, 204, 113, 0.3);
+      --shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #0a2f0a, #1a4a1a);
+    }
+
+    /* ====================================
+       Animated Eco Background
+    ==================================== */
+    #eco-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    #eco-bg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 50%, rgba(46, 204, 113, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 80%, rgba(52, 152, 219, 0.15) 0%, transparent 50%);
+      animation: pulseBg 8s infinite alternate;
+    }
+
+    @keyframes pulseBg {
+      0% { opacity: 0.5; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Floating Leaves */
+    #eco-bg::after {
+      content: '🌿 🍃 🌱 🌿 🍃';
+      position: absolute;
+      font-size: 4rem;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: flex-start;
+      padding: 2rem;
+      opacity: 0.15;
+      animation: floatLeaves 20s infinite linear;
+      pointer-events: none;
+    }
+
+    @keyframes floatLeaves {
+      0% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-20px) rotate(5deg); }
+      50% { transform: translateY(0) rotate(0deg); }
+      75% { transform: translateY(20px) rotate(-5deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+
+    /* ====================================
+       Custom Cursor
+    ==================================== */
+    #cursor-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .cursor-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #2ecc71;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 20px #2ecc71;
+      transition: all 0.1s ease;
+    }
+
+    .cursor-ring {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border: 2px solid rgba(46, 204, 113, 0.5);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: all 0.2s ease;
+    }
+
+    .cursor-ring.hover {
+      width: 50px;
+      height: 50px;
+      border-color: #2ecc71;
+      background: rgba(46, 204, 113, 0.1);
+    }
+
+    /* ====================================
+       Navbar Styles (Inline)
+    ==================================== */
+    #navbar-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      animation: slideDown 0.5s ease;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-100%); }
+      to { transform: translateY(0); }
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      background: rgba(10, 31, 10, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid var(--primary);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo i {
+      color: var(--primary);
+      font-size: 2.5rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 1.6rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .nav-links a i {
+      font-size: 1.8rem;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-btn {
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      font-size: 1.4rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      background: transparent;
+      color: white;
+      border: 2px solid var(--primary);
+    }
+
+    .nav-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+    }
+
+    /* ====================================
+       Auth Card
+    ==================================== */
+    .auth-card {
+      position: relative;
+      z-index: 10;
+      max-width: 450px;
+      width: 90%;
+      background: var(--bg-card);
+      backdrop-filter: blur(15px);
+      border-radius: 40px;
+      padding: 4rem 3.5rem;
+      text-align: center;
+      border: 1px solid rgba(46, 204, 113, 0.3);
+      box-shadow: var(--shadow), 0 0 30px rgba(46, 204, 113, 0.2);
+      animation: cardFloat 6s infinite ease-in-out, cardGlow 3s infinite alternate;
+    }
+
+    @keyframes cardFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes cardGlow {
+      0% { box-shadow: var(--shadow), 0 0 20px rgba(46, 204, 113, 0.2); }
+      100% { box-shadow: var(--shadow), 0 0 50px rgba(46, 204, 113, 0.4); }
+    }
+
+    .emoji {
+      font-size: 8rem;
+      margin-bottom: 1rem;
+      animation: spin 20s infinite linear;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .auth-card h2 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 3rem;
+      text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .input {
+      width: 100%;
+      padding: 1.6rem 2rem;
+      margin-bottom: 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(46, 204, 113, 0.3);
+      border-radius: 50px;
+      font-size: 1.6rem;
+      color: white;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.2);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 1.6rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: none;
+      border-radius: 50px;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(46, 204, 113, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(46, 204, 113, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .forgot {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .forgot:hover {
+      color: var(--primary);
+      transform: scale(1.05);
+      text-decoration: underline;
+    }
+
+    /* ====================================
+       Responsive Design
+    ==================================== */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem 1.5rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
+        gap: 1.5rem;
+      }
+
+      .nav-links a {
+        font-size: 1.4rem;
+      }
+
+      .auth-card {
+        padding: 3rem 2rem;
+        margin-top: 8rem;
+      }
+
+      .emoji {
+        font-size: 6rem;
+      }
+
+      .auth-card h2 {
+        font-size: 2.4rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        font-size: 1.2rem;
+      }
+
+      .auth-card {
+        padding: 2.5rem 1.5rem;
+      }
+
+      .input {
+        padding: 1.2rem 1.5rem;
+        font-size: 1.4rem;
+      }
+
+      .btn {
+        padding: 1.2rem;
+        font-size: 1.6rem;
+      }
+    }
+  </style>
 </head>
 
-<body class="auth-body">
-
+<body>
+  <!-- Custom Cursor -->
   <div id="cursor-container"></div>
-<script src="js/components/component-loader.js"></script>
 
-  <div id="navbar-container"></div>
-
-  <!-- Animated eco background -->
+  <!-- Animated Eco Background -->
   <div id="eco-bg"></div>
+
+  <!-- Navbar -->
+  <div id="navbar-container">
+    <nav class="navbar">
+      <a href="#" class="logo">
+        <i class="fas fa-leaf"></i>
+        <span>EcoLife</span>
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="#"><i class="fas fa-tree"></i> Community</a></li>
+        <li><a href="#"><i class="fas fa-paw"></i> Animals</a></li>
+        <li><a href="#"><i class="fas fa-chart-line"></i> Impact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="nav-btn" onclick="window.location.href='login.html'">Login</button>
+        <button class="nav-btn" onclick="window.location.href='signup.html'">Sign Up</button>
+      </div>
+    </nav>
+  </div>
 
   <!-- Login Card -->
   <div class="auth-card">
     <div class="emoji">🌱</div>
     <h2>Welcome to EcoSphere</h2>
 
-    <input type="text" placeholder="Username or Email" class="input" required>
-    <input type="password" placeholder="Password" class="input" required>
+    <input type="text" placeholder="Username or Email" class="input" id="username" required>
+    <input type="password" placeholder="Password" class="input" id="password" required>
 
     <button onclick="login()" class="btn">Log In</button>
 
     <a class="forgot" href="otp.html">Forgot password?</a>
   </div>
 
+  <!-- Scripts -->
+  <script>
+    // ====================================
+    // Custom Cursor
+    // ====================================
+    (function initCursor() {
+      const container = document.getElementById('cursor-container');
+      
+      // Create cursor elements
+      const dot = document.createElement('div');
+      dot.className = 'cursor-dot';
+      
+      const ring = document.createElement('div');
+      ring.className = 'cursor-ring';
+      
+      container.appendChild(dot);
+      container.appendChild(ring);
+
+      // Mouse position
+      let mouseX = 0, mouseY = 0;
+      let dotX = 0, dotY = 0;
+      let ringX = 0, ringY = 0;
+
+      // Track mouse movement
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      // Smooth cursor animation
+      function animateCursor() {
+        // Smooth follow for dot
+        dotX += (mouseX - dotX) * 0.3;
+        dotY += (mouseY - dotY) * 0.3;
+        
+        // Slower follow for ring
+        ringX += (mouseX - ringX) * 0.1;
+        ringY += (mouseY - ringY) * 0.1;
+
+        dot.style.left = dotX + 'px';
+        dot.style.top = dotY + 'px';
+        ring.style.left = ringX + 'px';
+        ring.style.top = ringY + 'px';
+
+        requestAnimationFrame(animateCursor);
+      }
+      animateCursor();
+
+      // Hover effect on interactive elements
+      const interactiveElements = document.querySelectorAll('a, button, .input, .btn, .forgot, .nav-links li');
+      
+      interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          ring.classList.add('hover');
+        });
+        
+        el.addEventListener('mouseleave', () => {
+          ring.classList.remove('hover');
+        });
+      });
+
+      // Click effect
+      document.addEventListener('mousedown', () => {
+        dot.style.transform = 'translate(-50%, -50%) scale(1.5)';
+        ring.style.transform = 'translate(-50%, -50%) scale(1.2)';
+        dot.style.backgroundColor = '#27ae60';
+      });
+
+      document.addEventListener('mouseup', () => {
+        dot.style.transform = 'translate(-50%, -50%) scale(1)';
+        ring.style.transform = 'translate(-50%, -50%) scale(1)';
+        dot.style.backgroundColor = '#2ecc71';
+      });
+
+      // Hide cursor when leaving window
+      document.addEventListener('mouseleave', () => {
+        dot.style.opacity = '0';
+        ring.style.opacity = '0';
+      });
+
+      document.addEventListener('mouseenter', () => {
+        dot.style.opacity = '1';
+        ring.style.opacity = '1';
+      });
+    })();
+
+    // ====================================
+    // Login Function
+    // ====================================
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if (!username || !password) {
+        alert('Please fill in all fields');
+        return;
+      }
+
+      // Simulate login animation
+      const btn = event.target;
+      btn.innerHTML = '🌱 Logging in...';
+      btn.style.opacity = '0.8';
+      btn.style.pointerEvents = 'none';
+
+      setTimeout(() => {
+        alert('Welcome to EcoSphere! (Demo Login)');
+        window.location.href = 'dashboard.html';
+      }, 1500);
+    }
+
+    // ====================================
+    // Floating Leaves Animation
+    // ====================================
+    (function createLeaves() {
+      const bg = document.getElementById('eco-bg');
+      const leaves = ['🌿', '🍃', '🌱', '🌿', '🍃', '🌱'];
+      
+      setInterval(() => {
+        const leaf = document.createElement('div');
+        leaf.innerHTML = leaves[Math.floor(Math.random() * leaves.length)];
+        leaf.style.position = 'absolute';
+        leaf.style.left = Math.random() * 100 + '%';
+        leaf.style.top = '-50px';
+        leaf.style.fontSize = (Math.random() * 30 + 20) + 'px';
+        leaf.style.opacity = '0.3';
+        leaf.style.animation = `floatDown ${Math.random() * 10 + 10}s linear`;
+        leaf.style.pointerEvents = 'none';
+        leaf.style.zIndex = '1';
+        
+        bg.appendChild(leaf);
+
+        // Remove leaf after animation
+        setTimeout(() => {
+          leaf.remove();
+        }, 20000);
+      }, 2000);
+    })();
+
+    // Add float down animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes floatDown {
+        from { transform: translateY(0) rotate(0deg); }
+        to { transform: translateY(100vh) rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+
+  <!-- Script references (keep for structure, but functionality already inline) -->
+  <script src="js/components/component-loader.js"></script>
   <script src="js/pages/community/community.js"></script>
-    <script src="js/components/navbar-loader.js"></script>
+  <script src="js/components/navbar-loader.js"></script>
 </body>
 </html>
-

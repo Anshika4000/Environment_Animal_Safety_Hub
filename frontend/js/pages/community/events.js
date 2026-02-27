@@ -2,16 +2,16 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Theme toggle functionality
     const themeToggle = document.getElementById('themeToggle');
-    if (themeToggle) {
+    if (themeToggle && !window.__ECO_THEME_TOGGLE_BOUND__) {
         themeToggle.addEventListener('click', function() {
             document.body.classList.toggle('dark-theme');
             const isDark = document.body.classList.contains('dark-theme');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            localStorage.setItem('ecolife_theme', isDark ? 'dark' : 'light');
         });
     }
 
     // Load saved theme
-    const savedTheme = localStorage.getItem('theme');
+    const savedTheme = localStorage.getItem('ecolife_theme');
     if (savedTheme === 'dark') {
         document.body.classList.add('dark-theme');
     }

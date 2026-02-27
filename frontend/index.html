@@ -120,7 +120,7 @@
         </div>
       </div>
       <div class="noise-crisis-actions">
-        <a class="indigenous-crisis-btn" href="../js/indigenous-knowledge-loss.html">
+        <a class="indigenous-crisis-btn" href="./pages/animals/indigenous-knowledge-loss.html">
           <i class="fas fa-eye">
           </i>
           View Crisis Details
@@ -149,7 +149,7 @@
         </div>
       </div>
       <div class="indigenous-crisis-actions">
-        <a class="indigenous-crisis-btn" href="../js/indigenous-knowledge-loss.html">
+        <a class="indigenous-crisis-btn" href="js/indigenous-knowledge-loss.html">
           <i class="fas fa-eye">
           </i>
           View Crisis Details
@@ -230,9 +230,7 @@
     id="scrollProgress" role="progressbar">
   </div>
   <!-- Navbar -->
-  <div id="navbar-container">
-  </div>
-
+ <div id="navbar-container" style="min-height: 80px;"></div>
   <!-- Main Content -->
   <main id="main-content" role="main">
     <!-- Hero Section -->
@@ -241,15 +239,10 @@
         <video autoplay class="hero-video-media" id="hero-background-video" loop muted playsinline
           poster="assets/images/others/Animal_Environment_Photo.jpg">
           <source src="assets/videos/hero-background.mp4" type="video/mp4" />
-          <img alt="" src="assets/images/others/Animal_Environment_Photo.jpg" />
         </video>
       </div>
       <div aria-hidden="true" class="hero-video-overlay">
       </div>
-      <button aria-label="Pause background video" aria-pressed="true" class="hero-video-toggle" type="button">
-        <i class="fa-solid fa-pause"></i>
-        <span class="hero-video-toggle-text">Pause background video</span>
-      </button>
       <!-- Animated Background Elements -->
       <div aria-hidden="true" class="hero-bg-elements">
         <div class="floating-element leaf1">
@@ -718,7 +711,7 @@
                 </p>
               </div>
               <div class="service-card-back">
-                <a class="service-link" href="../js/report/sos.html">
+                <a class="service-link" href="pages/report/sos.html">
                   Get Help
                   <i class="fa-solid fa-arrow-right">
                   </i>
@@ -729,96 +722,229 @@
         </div>
       </div>
     </section>
-    <!-- Donation Section -->
-    <section class="donation-section" id="donation">
-      <div class="donation-container">
-        <div class="donation-header">
-          <span class="section-tag">
-            <i class="fa-solid fa-heart">
-            </i>
-            Eco-Fund
-          </span>
-          <h2>
-            Support Environmental Causes
-          </h2>
-          <p>
-            Help verified environmental NGOs, local shelters, and community-led green initiatives through our secure
-            donation platform.
-          </p>
+  <!-- ================= Donation Section ================= -->
+<section class="donation-section" id="donation">
+  <div class="donation-container">
+
+    <div class="donation-header">
+      <span class="section-tag">🌱 Eco-Fund</span>
+      <h2>Support Environmental Causes</h2>
+      <p>Help verified NGOs and community-driven environmental campaigns.</p>
+    </div>
+
+    <!-- Campaign Cards -->
+    <div class="campaigns-grid" id="campaigns-container"></div>
+
+    <!-- Donation Form -->
+    <div class="donation-form">
+      <h3>Make a Donation</h3>
+
+      <form id="donation-form">
+
+        <label>Select Campaign</label>
+        <select id="donation-campaign" required>
+          <option value="">Choose campaign...</option>
+        </select>
+
+        <label>Donation Amount ($)</label>
+
+        <div class="amount-buttons">
+          <button type="button" class="amount-button" data-amount="10">$10</button>
+          <button type="button" class="amount-button" data-amount="25">$25</button>
+          <button type="button" class="amount-button" data-amount="50">$50</button>
+          <button type="button" class="amount-button" data-amount="100">$100</button>
         </div>
-        <div class="campaigns-grid" id="campaigns-container">
-          <!-- Campaigns will be rendered dynamically -->
+
+        <input 
+          type="number" 
+          id="donation-amount"
+          placeholder="Enter custom amount"
+          min="1"
+          required
+        >
+
+        <label>Your Name (optional)</label>
+        <input type="text" id="donor-name" placeholder="Anonymous">
+
+        <button class="donation-btn" type="submit">
+          Donate Securely
+        </button>
+
+      </form>
+    </div>
+
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="donation-modal">
+    <div class="modal-content">
+      <span class="close-modal" id="close-donation-modal">&times;</span>
+      <h3>🎉 Thank You!</h3>
+      <p id="donation-thanks"></p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= Donation JS ================= -->
+<script>
+
+/* ---------------- Campaign Data ---------------- */
+const campaigns = [
+  {
+    id:1,
+    title:"Tree Plantation Drive",
+    targetAmount:2000,
+    currentAmount:1200,
+    donors:["Eco Club","Local School","Green Org"]
+  },
+  {
+    id:2,
+    title:"Ocean Cleanup Initiative",
+    targetAmount:1500,
+    currentAmount:850,
+    donors:["Beach Volunteers","Surf Club"]
+  },
+  {
+    id:3,
+    title:"Wildlife Protection Fund",
+    targetAmount:2500,
+    currentAmount:1400,
+    donors:["Nature Group","Forest Team"]
+  }
+];
+
+/* ---------------- DOM Elements ---------------- */
+let donationModal;
+let donationForm;
+let donationAmountInput;
+let donationCampaignSelect;
+
+/* ---------------- Init ---------------- */
+document.addEventListener("DOMContentLoaded", initializeDonationFeature);
+
+function initializeDonationFeature(){
+
+  donationModal = document.getElementById("donation-modal");
+  donationForm = document.getElementById("donation-form");
+  donationAmountInput = document.getElementById("donation-amount");
+  donationCampaignSelect = document.getElementById("donation-campaign");
+
+  renderCampaigns();
+  populateCampaignDropdown();
+  setupEventListeners();
+}
+
+/* ---------------- Render Campaigns ---------------- */
+function renderCampaigns(){
+
+  const container = document.getElementById("campaigns-container");
+  container.innerHTML = "";
+
+  campaigns.forEach(campaign => {
+
+    const percent = Math.min(
+      100,
+      (campaign.currentAmount / campaign.targetAmount) * 100
+    );
+
+    container.innerHTML += `
+      <div class="campaign-card">
+
+        <h4>${campaign.title}</h4>
+
+        <div class="progress-bar">
+          <div class="progress-fill" style="width:${percent}%"></div>
         </div>
-        <div class="donation-form" id="donation-form-container">
-          <h3>
-            Make a Donation
-          </h3>
-          <form id="donation-form">
-            <div class="form-group">
-              <label for="donation-campaign">
-                Select Campaign
-              </label>
-              <select id="donation-campaign" required="">
-                <option value="">
-                  Choose a campaign...
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="donation-amount">
-                Donation Amount ($)
-              </label>
-              <div class="amount-buttons">
-                <button class="amount-button" data-amount="10" type="button">
-                  $10
-                </button>
-                <button class="amount-button" data-amount="25" type="button">
-                  $25
-                </button>
-                <button class="amount-button" data-amount="50" type="button">
-                  $50
-                </button>
-                <button class="amount-button" data-amount="100" type="button">
-                  $100
-                </button>
-              </div>
-              <input id="donation-amount" min="1" placeholder="Enter custom amount" required="" type="number" />
-            </div>
-            <div class="form-group">
-              <label for="donor-name">
-                Your Name (optional)
-              </label>
-              <input id="donor-name" placeholder="Enter your name for donor wall" type="text" />
-            </div>
-            <button class="donation-btn" type="submit">
-              <i class="fa-solid fa-heart">
-              </i>
-              Donate Securely
-            </button>
-          </form>
-        </div>
+
+        <p>$${campaign.currentAmount} raised of $${campaign.targetAmount}</p>
+
       </div>
-      <div class="modal" id="donation-modal">
-        <div class="modal-content">
-          <span class="close-modal" id="close-donation-modal">
-            ×
-          </span>
-          <div class="donation-success">
-            <i class="fa-solid fa-check-circle">
-            </i>
-          </div>
-          <h3>
-            Thank You for Your Donation!
-          </h3>
-          <p class="donation-thanks" id="donation-thanks">
-            Your contribution makes a real difference!
-          </p>
-          <p>
-            Your donation helps protect our environment and support important causes.
-          </p>
-        </div>
-      </div>
-    </section>
+    `;
+  });
+}
+
+/* ---------------- Dropdown ---------------- */
+function populateCampaignDropdown(){
+
+  campaigns.forEach(c => {
+    const option = document.createElement("option");
+    option.value = c.id;
+    option.textContent = c.title;
+    donationCampaignSelect.appendChild(option);
+  });
+
+}
+
+/* ---------------- Events ---------------- */
+function setupEventListeners(){
+
+  /* Amount Buttons */
+  document.querySelectorAll(".amount-button").forEach(btn=>{
+    btn.addEventListener("click",function(){
+
+      donationAmountInput.value = this.dataset.amount;
+
+      document.querySelectorAll(".amount-button")
+        .forEach(b=>b.classList.remove("active"));
+
+      this.classList.add("active");
+    });
+  });
+
+  /* Close Modal */
+  document.getElementById("close-donation-modal")
+    .addEventListener("click",()=>{
+      donationModal.classList.remove("active");
+    });
+
+  donationModal.addEventListener("click",(e)=>{
+    if(e.target === donationModal){
+      donationModal.classList.remove("active");
+    }
+  });
+
+  /* Form Submit */
+  donationForm.addEventListener("submit",handleDonationSubmit);
+}
+
+/* ---------------- Submit ---------------- */
+function handleDonationSubmit(e){
+
+  e.preventDefault();
+
+  const campaignId = parseInt(donationCampaignSelect.value);
+  const amount = parseFloat(donationAmountInput.value);
+  const name =
+    document.getElementById("donor-name").value || "Anonymous";
+
+  if(!campaignId || !amount || amount <= 0){
+    alert("Please enter valid details");
+    return;
+  }
+
+  const campaign = campaigns.find(c=>c.id === campaignId);
+
+  /* Fake Payment Delay */
+  setTimeout(()=>{
+
+    campaign.currentAmount += amount;
+    campaign.donors.push(name);
+
+    renderCampaigns();
+
+    document.getElementById("donation-thanks").innerHTML =
+      `${name}, thank you for donating $${amount} to ${campaign.title}!`;
+
+    donationModal.classList.add("active");
+
+    donationForm.reset();
+
+  },1000);
+
+}
+
+</script>
     <!-- AI Chatbot
   <div class="chatbot-container">
     <div class="chat-header">🌱 Eco AI Buddy</div>
@@ -868,7 +994,7 @@
                 to a furry friend in need.
               </p>
               <div class="card-footer">
-                <a class="card-btn" href="../js/animal-safety/pet-adoption.html">
+                <a class="card-btn" href="pages/animal-care/adoption-management.html">
                   Adopt Now
                   <i class="fa-solid fa-arrow-right">
                   </i>
@@ -900,7 +1026,7 @@
                 natural habitats.
               </p>
               <div class="card-footer">
-                <a class="card-btn open-modal-btn" data-id="wildlife" href="javascript:void(0)">
+                <a class="card-btn"  href="pages/animal-care/animal-welfare-education.html">
                   Learn More
                   <i class="fa-solid fa-arrow-right">
                   </i>
@@ -931,7 +1057,7 @@
                 feeding programs.
               </p>
               <div class="card-footer">
-                <a class="card-btn open-modal-btn" data-id="feeding" href="javascript:void(0)">
+                <a class="card-btn "  href="pages/animal-safety/animal-nutrition-feeding.html">
                   Join Program
                   <i class="fa-solid fa-arrow-right">
                   </i>
@@ -1182,7 +1308,7 @@
               <h3>Urban Tree Canopy Visualizer</h3>
               <p>See your city's green cover, spot areas needing trees, and join local planting drives!</p>
               <div class="card-footer">
-                <a href="../js/urban-tree-canopy-visualizer.html" class="btn btn-primary"
+                <a href="pages/education/urban/urban-tree-canopy-visualizer.html" class="btn btn-primary"
                   style="margin-top:8px;">Explore
                   Visualizer</a>
               </div>
@@ -1199,7 +1325,7 @@
               <p>Find, join, and create local eco-friendly events. RSVP and get reminders for cleanups, workshops, and
                 more!</p>
               <div class="card-footer">
-                <a href="../frontend/pages/eco-event-calendar.html" class="btn btn-primary" style="margin-top:8px;">Open
+                <a href="pages/eco-event-calendar.html" class="btn btn-primary" style="margin-top:8px;">Open
                   Calendar</a>
               </div>
             </div>
@@ -1215,7 +1341,7 @@
               <p>Find, review, and support local green businesses. Search, map, and rate eco-friendly stores, cafes, and
                 more!</p>
               <div class="card-footer">
-                <a href="../frontend/pages/eco-business-directory.html" class="btn btn-primary"
+                <a href="pages/eco-business-directory.html" class="btn btn-primary"
                   style="margin-top:8px;">Browse
                   Directory</a>
               </div>
@@ -1232,7 +1358,7 @@
               <p>Log and share wildlife sightings, upload photos, and explore recent observations on an interactive map!
               </p>
               <div class="card-footer">
-                <a href="../frontend/pages/wildlife-sighting-tracker.html" class="btn btn-primary"
+                <a href="pages/wildlife-sighting-tracker.html" class="btn btn-primary"
                   style="margin-top:8px;">Track
                   Sightings</a>
               </div>
@@ -1249,7 +1375,7 @@
               <p>Read the latest environmental news, research, and policy updates. Filter by topic and region, and
                 bookmark articles!</p>
               <div class="card-footer">
-                <a href="../frontend/pages/environmental-news-feed.html" class="btn btn-primary"
+                <a href="pages/environmental-news-feed.html" class="btn btn-primary"
                   style="margin-top:8px;">View News
                   Feed</a>
               </div>
@@ -1266,7 +1392,7 @@
               <p>Earn badges for eco-friendly actions like events, sightings, and reviews. Show off your achievements on
                 your profile!</p>
               <div class="card-footer">
-                <a href="../js/eco-achievement-badges.html" class="btn btn-primary"
+                <a href="pages/badges.html" class="btn btn-primary"
                   style="margin-top:8px;">View My Badges</a>
               </div>
             </div>
@@ -1282,7 +1408,7 @@
               <p>Track your direct and indirect water use from daily activities, diet, and purchases. Get a detailed
                 breakdown and tips!</p>
               <div class="card-footer">
-                <a href="../frontend/pages/water-footprint-calculator.html" class="btn btn-primary"
+                <a href="pages/water-footprint-calculator.html" class="btn btn-primary"
                   style="margin-top:8px;">Calculate
                   Now</a>
               </div>
@@ -1299,7 +1425,7 @@
               <p>Log your plastic use, visualize trends, and set reduction goals. Get tips to reduce your plastic
                 footprint!</p>
               <div class="card-footer">
-                <a href="../frontend/pages/plastic-footprint-tracker.html" class="btn btn-primary"
+                <a href="pages/plastic-footprint-tracker.html" class="btn btn-primary"
                   style="margin-top:8px;">Track Plastic
                   Use</a>
               </div>
@@ -1316,7 +1442,7 @@
               <p>Browse and save actionable tips for making your home more sustainable. Filter by category and search
                 for ideas!</p>
               <div class="card-footer">
-                <a href="../js/eco-home-tips-hub.html" class="btn btn-primary" style="margin-top:8px;">Explore
+                <a href="js/eco-home-tips-hub.html" class="btn btn-primary" style="margin-top:8px;">Explore
                   Tips</a>
               </div>
             </div>
@@ -1331,7 +1457,7 @@
               <h3>Sustainable Shopping Guide</h3>
               <p>Find eco-friendly products, brands, and stores. Learn about eco-labels and bookmark your favorites!</p>
               <div class="card-footer">
-                <a href="../js/sustainable-shopping-guide.html" class="btn btn-primary"
+                <a href="js/sustainable-shopping-guide.html" class="btn btn-primary"
                   style="margin-top:8px;">Shop
                   Sustainably</a>
               </div>
@@ -1347,7 +1473,7 @@
               <h3>Community Green Projects Map</h3>
               <p>Discover, join, or start local green projects. Post updates, photos, and track progress!</p>
               <div class="card-footer">
-                <a href="../js/community-green-projects-map.html" class="btn btn-primary"
+                <a href="js/community-green-projects-map.html" class="btn btn-primary"
                   style="margin-top:8px;">Explore
                   Projects</a>
               </div>
@@ -1364,7 +1490,7 @@
               <p>Log and visualize your renewable energy usage. Track savings, compare with local averages, and get tips
                 to increase adoption!</p>
               <div class="card-footer">
-                <a href="../frontend/pages/renewable-energy-tracker.html" class="btn btn-primary"
+                <a href="pages/renewable-energy-tracker.html" class="btn btn-primary"
                   style="margin-top:8px;">Track Energy</a>
               </div>
             </div>
@@ -1575,7 +1701,7 @@
           </article>
         </div>
         <div class="steps-cta" data-aos="fade-up" data-aos-delay="500">
-          <a class="btn btn-primary btn-lg" href="../js/signup.html">
+          <a class="btn btn-primary btn-lg" href="js/signup.html">
             <i class="fa-solid fa-rocket">
             </i>
             Start Your Journey Today
@@ -1774,10 +1900,10 @@
               </div>
             </div>
             <div class="plant-cta">
-              <a class="btn btn-primary" href="../js/plant-care.html">
+              <a class="btn btn-primary" href="js/plant-care.html">
                 Explore Tips
               </a>
-              <a class="btn btn-outline" href="../js/join-garden-drive.html">
+              <a class="btn btn-outline" href="js/join-garden-drive.html">
                 <i class="fa-solid fa-calendar">
                 </i>
                 Join Garden Drive
@@ -1882,7 +2008,7 @@
                 <span>Win Badges</span>
               </div>
 
-              <a href="../js/learn-more.html" class="quiz-feature-link">
+              <a href="js/learn-more.html" class="quiz-feature-link">
                 <div class="quiz-feature" data-tilt>
                   <div class="feature-icon-wrapper icon-book">
                     <i class="fa-solid fa-book-open"></i>
@@ -1895,11 +2021,11 @@
 
             <!-- ACTION BUTTONS -->
             <div class="quiz-actions">
-              <a href="../js/quizzes/quiz.html" class="quiz-btn btn-primary-quiz">
+              <a href="js/quizzes/quiz.html" class="quiz-btn btn-primary-quiz">
                 <i class="fa-solid fa-play"></i> Start Quiz Now
               </a>
 
-              <a href="../js/games/waste-game.html" class="quiz-btn btn-secondary-quiz">
+              <a href="js/games/waste-game.html" class="quiz-btn btn-secondary-quiz">
                 <i class="fa-solid fa-gamepad"></i> Play Waste Game
               </a>
             </div>
@@ -1991,7 +2117,7 @@
             Calculate your personal environmental impact and get tips to reduce your carbon footprint.
           </p>
           <div class="card-footer">
-            <a class="card-btn" href="../js/impact-calculator.html">
+            <a class="card-btn" href="js/impact-calculator.html">
               Calculate Now
               <i class="fa-solid fa-arrow-right">
               </i>
@@ -2041,7 +2167,7 @@
               </span>
             </div>
           </div>
-          <a class="explore-btn" href="../js/visual-museum.html">
+          <a class="explore-btn" href="js/visual-museum.html">
             🏛️ Visit Museum
             <i class="fas fa-arrow-right">
             </i>
@@ -2553,7 +2679,7 @@
           EcoLife is an open-source initiative built by a global team of nature lovers and tech enthusiasts.
           See the faces behind the code.
         </p>
-        <a class="btn-glow" href="../js/masthead.html">
+        <a class="btn-glow" href="js/masthead.html">
           View Masthead
           <i class="fa-solid fa-arrow-right">
           </i>
@@ -2670,7 +2796,7 @@
   <!-- MAIN APP -->
   <script src="js/main.js">
   </script>
-  <!-- PAGE / COMPONENT SCRIPTS -->
+   
   <script src="js/pages/animal-safety/adoption.js">
   </script>
   <script src="js/components/component-loader.js">
@@ -2984,12 +3110,193 @@
       }
     }
   </script>
+  <script>
+class EcoVoiceAssistant {
+  constructor() {
+    this.recognition = null;
+    this.isListening = false;
+    this.synth = window.speechSynthesis;
+    this.micBtn = document.querySelector(".mic-btn");
+    this.init();
+  }
+
+  init() {
+    if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
+      this.speak("Sorry, your browser does not support voice recognition.");
+      return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    this.recognition = new SpeechRecognition();
+    this.recognition.lang = "en-US";
+    this.recognition.continuous = false;
+    this.recognition.interimResults = false;
+
+    this.recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript.toLowerCase();
+      this.handleCommand(transcript);
+    };
+
+    this.recognition.onend = () => {
+      this.isListening = false;
+      this.micBtn.classList.remove("listening");
+    };
+
+    if (this.micBtn) {
+      this.micBtn.addEventListener("click", () => this.toggleListening());
+    }
+  }
+
+  toggleListening() {
+    if (this.isListening) {
+      this.recognition.stop();
+      this.isListening = false;
+      this.micBtn.classList.remove("listening");
+    } else {
+      this.recognition.start();
+      this.isListening = true;
+      this.micBtn.classList.add("listening");
+      this.speak("I am listening.");
+    }
+  }
+
+  speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    this.synth.speak(utterance);
+  }
+
+  handleCommand(command) {
+    console.log("Voice Command:", command);
+
+    // 🔹 Greetings
+    if (command.includes("hello") || command.includes("hi")) {
+      this.speak("Hello! I am your Eco Assistant. How can I help?");
+    }
+
+    // 🔹 Time & Date
+    else if (command.includes("time")) {
+      const time = new Date().toLocaleTimeString();
+      this.speak("The current time is " + time);
+    }
+    else if (command.includes("date")) {
+      const date = new Date().toDateString();
+      this.speak("Today's date is " + date);
+    }
+
+    // 🔹 Scroll Controls
+    else if (command.includes("scroll down")) {
+      window.scrollBy({ top: 500, behavior: "smooth" });
+      this.speak("Scrolling down.");
+    }
+    else if (command.includes("scroll up")) {
+      window.scrollBy({ top: -500, behavior: "smooth" });
+      this.speak("Scrolling up.");
+    }
+    else if (command.includes("go to top")) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      this.speak("Going to top.");
+    }
+    else if (command.includes("go to bottom")) {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      this.speak("Going to bottom.");
+    }
+
+    // 🔹 Environmental Effects
+    else if (command.includes("start rain")) {
+      if (typeof startRain === "function") {
+        startRain(100);
+        this.speak("Starting rain effect.");
+      }
+    }
+    else if (command.includes("start leaves")) {
+      if (typeof startLeaves === "function") {
+        startLeaves(30);
+        this.speak("Leaves effect activated.");
+      }
+    }
+    else if (command.includes("sunlight")) {
+      if (typeof enableSunlight === "function") {
+        enableSunlight();
+        this.speak("Sunlight enabled.");
+      }
+    }
+
+    // 🔹 Battery Status
+    else if (command.includes("battery")) {
+      if (navigator.getBattery) {
+        navigator.getBattery().then(battery => {
+          this.speak("Battery level is " + Math.round(battery.level * 100) + " percent.");
+        });
+      } else {
+        this.speak("Battery information not supported.");
+      }
+    }
+
+    // 🔹 Internet Status
+    else if (command.includes("internet status")) {
+      if (navigator.onLine) {
+        this.speak("You are currently online.");
+      } else {
+        this.speak("You are offline.");
+      }
+    }
+
+    // 🔹 Dictionary Search
+    else if (command.includes("search dictionary")) {
+      const word = command.replace("search dictionary", "").trim();
+      if (word) {
+        const searchInput = document.getElementById("searchInput");
+        if (searchInput) {
+          searchInput.value = word;
+          searchInput.dispatchEvent(new Event("input"));
+          this.speak("Searching dictionary for " + word);
+        }
+      }
+    }
+
+    // 🔹 Quiz Control
+    else if (command.includes("next question")) {
+      const nextBtn = document.getElementById("nextBtn");
+      if (nextBtn) {
+        nextBtn.click();
+        this.speak("Moving to next question.");
+      }
+    }
+
+    // 🔹 Environmental Knowledge
+    else if (command.includes("what is global warming")) {
+      this.speak("Global warming is the long term rise in Earth's average temperature caused by greenhouse gases.");
+    }
+    else if (command.includes("what is biodiversity")) {
+      this.speak("Biodiversity refers to the variety of life on Earth including plants, animals, and microorganisms.");
+    }
+
+    // 🔹 Stop Listening
+    else if (command.includes("stop listening")) {
+      this.recognition.stop();
+      this.speak("Voice assistant stopped.");
+    }
+
+    // 🔹 Default Response
+    else {
+      this.speak("Sorry, I did not understand that command.");
+    }
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  new EcoVoiceAssistant();
+});
+</script>
   <!-- Global JavaScript for Live Clock -->
   <!-- Home Page Parallax Script -->
   <script src="js/components/eco-assistant.js"></script>
   <!-- PWA Script -->
   <script src="js/pwa.js">
   </script>
+
 
 </body>
 

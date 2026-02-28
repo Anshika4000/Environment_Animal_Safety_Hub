@@ -2050,6 +2050,83 @@ function handleDonationSubmit(e){
       </div>
     </section>
 
+    <style>
+.survival-score {
+  padding: 40px 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  border-radius: 20px;
+  margin: 40px auto;
+  max-width: 900px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+.survival-score h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.score-cards {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+
+.score-card {
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 15px;
+  width: 250px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
+}
+
+.score-card:hover {
+  transform: translateY(-5px);
+}
+
+.score-card span {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.bar {
+  background: rgba(255,255,255,0.2);
+  border-radius: 50px;
+  overflow: hidden;
+  height: 25px;
+}
+
+.bar div {
+  height: 100%;
+  width: 0%;
+  border-radius: 50px;
+  text-align: center;
+  line-height: 25px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: width 1.5s ease, background 0.5s ease;
+}
+
+.final-score {
+  margin-top: 30px;
+}
+
+#finalScore {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+#scoreMessage {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+</style>
+
     <section class="survival-score">
       <h2>
         Survival Score 🫁
@@ -2097,6 +2174,56 @@ function handleDonationSubmit(e){
         </p>
       </div>
     </section>
+
+    <script>
+function getRandomScore(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getColor(score) {
+  if (score > 70) return "linear-gradient(90deg, #00c853, #69f0ae)";
+  if (score > 40) return "linear-gradient(90deg, #ffab00, #ffd54f)";
+  return "linear-gradient(90deg, #d50000, #ff5252)";
+}
+
+function updateBar(id, score) {
+  const bar = document.getElementById(id);
+  bar.style.width = score + "%";
+  bar.style.background = getColor(score);
+  bar.textContent = score + "%";
+}
+
+function updateSurvivalScore() {
+  const air = getRandomScore(30, 95);
+  const water = getRandomScore(30, 95);
+  const bio = getRandomScore(30, 95);
+
+  updateBar("airBar", air);
+  updateBar("waterBar", water);
+  updateBar("bioBar", bio);
+
+  const final = Math.floor((air + water + bio) / 3);
+  document.getElementById("finalScore").textContent = 
+    "Survival Score: " + final + "%";
+
+  let message = "";
+  if (final > 70) {
+    message = "🌍 Earth is thriving! Keep protecting it.";
+  } else if (final > 40) {
+    message = "⚠️ Earth is stable but needs improvement.";
+  } else {
+    message = "🚨 Critical condition! Immediate action required.";
+  }
+
+  document.getElementById("scoreMessage").textContent = message;
+}
+
+// Run on page load
+window.onload = updateSurvivalScore;
+
+// Optional: Refresh score every 8 seconds
+setInterval(updateSurvivalScore, 8000);
+</script>
     <!-- Impact Calculator CTA Section -->
     <section class="calculator-cta-section">
       <article class="feature-card" data-aos="fade-up" data-aos-delay="300">

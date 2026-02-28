@@ -100,6 +100,74 @@
   ⬇️ -->
 <!-- </button> -->
 
+<style>
+    /* Optimized Cursor Container */
+  #cursor-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+  }
+
+  /* Main Cursor */
+  .custom-cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: #4caf50;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: difference;
+    will-change: transform, width, height, background;
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+  }
+
+  /* Trail Elements */
+  .cursor-trail {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: rgba(76, 175, 80, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    will-change: transform, opacity;
+    transition: opacity 0.3s ease;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+  }
+
+  /* Hover Effects */
+  .custom-cursor.hover {
+    width: 40px;
+    height: 40px;
+    background: #ffd700;
+    mix-blend-mode: normal;
+  }
+
+  /* Click Effect */
+  .custom-cursor.click {
+    width: 30px;
+    height: 30px;
+    background: #ff9800;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+
+  /* Hide cursor on touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    .custom-cursor,
+    .cursor-trail {
+      display: none;
+    }
+  }
+</style>
 <body>
   <!-- Noise Pollution Crisis Alert Banner - Level 3 Emergency -->
   <div class="noise-crisis-alert-banner" id="noise-crisis-alert-banner" style="display: none;">
@@ -2025,7 +2093,7 @@ function handleDonationSubmit(e){
                 <i class="fa-solid fa-play"></i> Start Quiz Now
               </a>
 
-              <a href="../frontend/pages/food-waste-tracker.html" class="quiz-btn btn-secondary-quiz">
+              <a href="../frontend/pages/games/waste-game.html" class="quiz-btn btn-secondary-quiz">
                 <i class="fa-solid fa-gamepad"></i> Play Waste Game
               </a>
             </div>
@@ -3425,6 +3493,255 @@ document.addEventListener("DOMContentLoaded", () => {
   </script>
 
 
+<script>
+    (function() {
+    'use strict';
+    
+    // Optimized Cursor Trail Manager
+    class OptimizedCursorTrail {
+      constructor() {
+        this.container = document.getElementById('cursor-container');
+        if (!this.container) {
+          this.container = document.createElement('div');
+          this.container.id = 'cursor-container';
+          document.body.appendChild(this.container);
+        }
+        
+        this.mainCursor = null;
+        this.trails = [];
+        this.mouseX = -100;
+        this.mouseY = -100;
+        this.lastX = -100;
+        this.lastY = -100;
+        this.frameId = null;
+        this.isRunning = false;
+        this.maxTrails = 15; // Reduced for better performance
+        this.trailInterval = 2; // Minimum distance between trails
+        
+        // Bind methods
+        this.update = this.update.bind(this);
+        this.onMouseMove = this.onMouseMove.bind(this);
+        this.onMouseLeave = this.onMouseLeave.bind(this);
+        this.onClick = this.onClick.bind(this);
+        this.onMouseOver = this.onMouseOver.bind(this);
+        this.onMouseOut = this.onMouseOut.bind(this);
+        
+        this.init();
+      }
+      
+      init() {
+        // Create main cursor
+        this.mainCursor = document.createElement('div');
+        this.mainCursor.className = 'custom-cursor';
+        this.container.appendChild(this.mainCursor);
+        
+        // Create trail pool
+        for (let i = 0; i < this.maxTrails; i++) {
+          const trail = document.createElement('div');
+          trail.className = 'cursor-trail';
+          trail.style.opacity = '0';
+          this.container.appendChild(trail);
+          this.trails.push({
+            element: trail,
+            x: -100,
+            y: -100,
+            active: false,
+            age: 0
+          });
+        }
+        
+        // Add event listeners with passive option for better performance
+        document.addEventListener('mousemove', this.onMouseMove, { passive: true });
+        document.addEventListener('mouseleave', this.onMouseLeave, { passive: true });
+        document.addEventListener('click', this.onClick, { passive: true });
+        
+        // Hover effects for interactive elements
+        document.addEventListener('mouseover', this.onMouseOver, { passive: true });
+        document.addEventListener('mouseout', this.onMouseOut, { passive: true });
+        
+        // Start animation loop
+        this.start();
+      }
+      
+      onMouseMove(e) {
+        // Update mouse position with rounding for performance
+        this.mouseX = Math.round(e.clientX);
+        this.mouseY = Math.round(e.clientY);
+        
+        // Update main cursor position immediately
+        if (this.mainCursor) {
+          this.mainCursor.style.transform = `translate(${this.mouseX}px, ${this.mouseY}px)`;
+        }
+        
+        // Create trail if mouse moved enough
+        const dx = this.mouseX - this.lastX;
+        const dy = this.mouseY - this.lastY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance > this.trailInterval) {
+          this.createTrail(this.mouseX, this.mouseY);
+          this.lastX = this.mouseX;
+          this.lastY = this.mouseY;
+        }
+      }
+      
+      onMouseLeave() {
+        // Hide main cursor when mouse leaves window
+        if (this.mainCursor) {
+          this.mainCursor.style.opacity = '0';
+        }
+        
+        // Hide all trails
+        this.trails.forEach(trail => {
+          trail.element.style.opacity = '0';
+          trail.active = false;
+        });
+      }
+      
+      onClick() {
+        if (!this.mainCursor) return;
+        
+        this.mainCursor.classList.add('click');
+        setTimeout(() => {
+          if (this.mainCursor) {
+            this.mainCursor.classList.remove('click');
+          }
+        }, 150);
+      }
+      
+      onMouseOver(e) {
+        const target = e.target;
+        const isClickable = target.matches('a, button, .clickable, [role="button"], input, select, textarea');
+        
+        if (isClickable && this.mainCursor) {
+          this.mainCursor.classList.add('hover');
+        }
+      }
+      
+      onMouseOut(e) {
+        const target = e.target;
+        const isClickable = target.matches('a, button, .clickable, [role="button"], input, select, textarea');
+        
+        if (isClickable && this.mainCursor) {
+          this.mainCursor.classList.remove('hover');
+        }
+      }
+      
+      createTrail(x, y) {
+        // Find oldest inactive trail or reuse oldest active
+        let oldestIndex = 0;
+        let oldestAge = Infinity;
+        
+        for (let i = 0; i < this.trails.length; i++) {
+          if (!this.trails[i].active) {
+            this.activateTrail(i, x, y);
+            return;
+          }
+          
+          if (this.trails[i].age < oldestAge) {
+            oldestAge = this.trails[i].age;
+            oldestIndex = i;
+          }
+        }
+        
+        // If all trails are active, reuse the oldest
+        this.activateTrail(oldestIndex, x, y);
+      }
+      
+      activateTrail(index, x, y) {
+        const trail = this.trails[index];
+        trail.x = x;
+        trail.y = y;
+        trail.active = true;
+        trail.age = 1; // Reset age
+        trail.element.style.transform = `translate(${x}px, ${y}px)`;
+        trail.element.style.opacity = '0.7';
+      }
+      
+      update() {
+        if (!this.isRunning) return;
+        
+        // Update trails with age-based fade out
+        for (let i = 0; i < this.trails.length; i++) {
+          const trail = this.trails[i];
+          
+          if (trail.active) {
+            // Increase age and decrease opacity
+            trail.age += 0.02; // Slower fade for smoother effect
+            
+            if (trail.age >= 1) {
+              const opacity = Math.max(0, 0.7 * (1 - trail.age));
+              trail.element.style.opacity = opacity;
+              
+              if (opacity <= 0) {
+                trail.active = false;
+                trail.element.style.opacity = '0';
+              }
+            }
+          }
+        }
+        
+        // Request next frame
+        this.frameId = requestAnimationFrame(this.update);
+      }
+      
+      start() {
+        if (this.isRunning) return;
+        this.isRunning = true;
+        this.frameId = requestAnimationFrame(this.update);
+      }
+      
+      stop() {
+        this.isRunning = false;
+        if (this.frameId) {
+          cancelAnimationFrame(this.frameId);
+          this.frameId = null;
+        }
+      }
+      
+      destroy() {
+        this.stop();
+        
+        // Remove event listeners
+        document.removeEventListener('mousemove', this.onMouseMove);
+        document.removeEventListener('mouseleave', this.onMouseLeave);
+        document.removeEventListener('click', this.onClick);
+        document.removeEventListener('mouseover', this.onMouseOver);
+        document.removeEventListener('mouseout', this.onMouseOut);
+        
+        // Remove elements
+        if (this.container) {
+          this.container.innerHTML = '';
+        }
+      }
+    }
+
+    // Initialize cursor trail when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        window.cursorTrail = new OptimizedCursorTrail();
+      });
+    } else {
+      window.cursorTrail = new OptimizedCursorTrail();
+    }
+
+    // Add CSS for hover effects on interactive elements
+    const style = document.createElement('style');
+    style.textContent = `
+      a, button, .clickable, [role="button"], input, select, textarea {
+        cursor: none !important;
+      }
+      
+      @media (max-width: 768px) {
+        a, button, .clickable, [role="button"], input, select, textarea {
+          cursor: auto !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+  })();
+</script>
 </body>
 
 </html>

@@ -191,6 +191,21 @@
       <div class="crisis-actions">
         <a class="crisis-btn" href="..//frontend/pages/environment/fire-regime-shifts.html">
           <i class="fas fa-fire"></i> View Crisis Details
+        <span class="crisis-level">
+          🧊 LEVEL 3 CRISIS
+        </span>
+        <span class="crisis-title">
+          Polar Albedo Loss Accelerating Global Warming Feedback Loops
+        </span>
+        <span class="crisis-action">
+          Arctic warming is accelerating - urgent intervention needed before a Blue Ocean Event
+        </span>
+      </div>
+      <div class="crisis-actions">
+        <a class="crisis-btn" href="pages/environment/polar-albedo-feedback-loop.html">
+          <i class="fas fa-snowflake">
+          </i>
+          View Crisis Details
         </a>
         <button aria-label="Close crisis alert" class="crisis-close" onclick="closeCrisisAlert()">
           <i class="fas fa-times"></i>
@@ -492,6 +507,30 @@
               </div>
               <div class="service-card-back">
                 <a class="service-link" href="pages/environment/fire-regime-shifts.html" style="background: linear-gradient(45deg, #ff4500, #ff0000); color: white; font-weight: bold; text-shadow: 0 0 10px rgba(0,0,0,0.5);" title="View Level 3 Crisis Details">🔥 Crisis Level 3 <i class="fa-solid fa-arrow-right"></i></a>
+                <h3>
+                  Climate Action
+                  <span class="crisis-urgent-text"
+                    style="color: #ff0000; font-size: 0.8rem; font-weight: 900; text-shadow: 0 0 10px #ff0000;">
+                    [LEVEL 3 CRISIS]
+                  </span>
+                </h3>
+                <p>
+                  Raising awareness about climate change and promoting sustainable
+                  lifestyle choices.
+                  <strong style="color: #ff4500; background: rgba(255,69,0,0.1); padding: 2px 6px; border-radius: 4px;">
+                    URGENT:
+                    Polar albedo loss is amplifying warming through ice-ocean feedback loops.
+                  </strong>
+                </p>
+              </div>
+              <div class="service-card-back">
+                <a class="service-link" href="pages/environment/polar-albedo-feedback-loop.html"
+                  style="background: linear-gradient(45deg, #ff4500, #ff0000); color: white; font-weight: bold; text-shadow: 0 0 10px rgba(0,0,0,0.5);"
+                  title="View Level 3 Crisis Details">
+                  🧊 Crisis Level 3
+                  <i class="fa-solid fa-arrow-right">
+                  </i>
+                </a>
               </div>
             </div>
           </article>
@@ -1190,6 +1229,13 @@
             <div class="quiz-actions">
               <a href="js/quizzes/quiz.html" class="quiz-btn btn-primary-quiz"><i class="fa-solid fa-play"></i> Start Quiz Now</a>
               <a href="js/games/waste-game.html" class="quiz-btn btn-secondary-quiz"><i class="fa-solid fa-gamepad"></i> Play Waste Game</a>
+              <a href="../frontend/pages/animal-safety/animal-first-aid.html" class="quiz-btn btn-primary-quiz">
+                <i class="fa-solid fa-play"></i> Start Quiz Now
+              </a>
+
+              <a href="../frontend/pages/games/waste-game.html" class="quiz-btn btn-secondary-quiz">
+                <i class="fa-solid fa-gamepad"></i> Play Waste Game
+              </a>
             </div>
           </div>
 
@@ -1206,6 +1252,83 @@
     </section>
 
     <!-- Survival Score Section -->
+    <style>
+.survival-score {
+  padding: 40px 20px;
+  text-align: center;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  border-radius: 20px;
+  margin: 40px auto;
+  max-width: 900px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+.survival-score h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.score-cards {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+
+.score-card {
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 15px;
+  width: 250px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
+}
+
+.score-card:hover {
+  transform: translateY(-5px);
+}
+
+.score-card span {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.bar {
+  background: rgba(255,255,255,0.2);
+  border-radius: 50px;
+  overflow: hidden;
+  height: 25px;
+}
+
+.bar div {
+  height: 100%;
+  width: 0%;
+  border-radius: 50px;
+  text-align: center;
+  line-height: 25px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: width 1.5s ease, background 0.5s ease;
+}
+
+.final-score {
+  margin-top: 30px;
+}
+
+#finalScore {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+#scoreMessage {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+</style>
+
     <section class="survival-score">
       <h2>Survival Score 🫁</h2>
       <p>Earth's ability to support life</p>
@@ -1229,6 +1352,55 @@
       </div>
     </section>
 
+    <script>
+function getRandomScore(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getColor(score) {
+  if (score > 70) return "linear-gradient(90deg, #00c853, #69f0ae)";
+  if (score > 40) return "linear-gradient(90deg, #ffab00, #ffd54f)";
+  return "linear-gradient(90deg, #d50000, #ff5252)";
+}
+
+function updateBar(id, score) {
+  const bar = document.getElementById(id);
+  bar.style.width = score + "%";
+  bar.style.background = getColor(score);
+  bar.textContent = score + "%";
+}
+
+function updateSurvivalScore() {
+  const air = getRandomScore(30, 95);
+  const water = getRandomScore(30, 95);
+  const bio = getRandomScore(30, 95);
+
+  updateBar("airBar", air);
+  updateBar("waterBar", water);
+  updateBar("bioBar", bio);
+
+  const final = Math.floor((air + water + bio) / 3);
+  document.getElementById("finalScore").textContent = 
+    "Survival Score: " + final + "%";
+
+  let message = "";
+  if (final > 70) {
+    message = "🌍 Earth is thriving! Keep protecting it.";
+  } else if (final > 40) {
+    message = "⚠️ Earth is stable but needs improvement.";
+  } else {
+    message = "🚨 Critical condition! Immediate action required.";
+  }
+
+  document.getElementById("scoreMessage").textContent = message;
+}
+
+// Run on page load
+window.onload = updateSurvivalScore;
+
+// Optional: Refresh score every 8 seconds
+setInterval(updateSurvivalScore, 8000);
+</script>
     <!-- Impact Calculator CTA Section -->
     <section class="calculator-cta-section">
       <article class="feature-card" data-aos="fade-up" data-aos-delay="300">
@@ -1288,7 +1460,7 @@
         </div>
         <div class="myth-fact-grid">
           <div class="myth-card-wrapper">
-            <article class="myth-card" onclick="this.classList.toggle('flipped')">
+            <article class="myth-card">
               <div class="card-face card-front">
                 <div class="card-shine"></div>
                 <div class="card-content">
@@ -1310,7 +1482,7 @@
           </div>
           
           <div class="myth-card-wrapper">
-            <article class="myth-card" onclick="this.classList.toggle('flipped')">
+            <article class="myth-card">
               <div class="card-face card-front">
                 <div class="card-shine"></div>
                 <div class="card-content">
@@ -1332,7 +1504,7 @@
           </div>
           
           <div class="myth-card-wrapper">
-            <article class="myth-card" onclick="this.classList.toggle('flipped')">
+            <article class="myth-card">
               <div class="card-face card-front">
                 <div class="card-shine"></div>
                 <div class="card-content">
@@ -1354,7 +1526,7 @@
           </div>
           
           <div class="myth-card-wrapper">
-            <article class="myth-card" onclick="this.classList.toggle('flipped')">
+            <article class="myth-card">
               <div class="card-face card-front">
                 <div class="card-shine"></div>
                 <div class="card-content">
